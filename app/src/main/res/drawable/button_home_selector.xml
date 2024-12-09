@@ -1,0 +1,7 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Trạng thái khi nút được nhấn -->
+    <item android:drawable="@drawable/button_home_border_pressed" android:state_pressed="true"/>
+
+    <!-- Trạng thái khi nút ở trạng thái bình thường -->
+    <item android:drawable="@drawable/button_home_border"/>
+</selector>

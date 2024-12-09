@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <!-- Phần tiêu đề -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="30dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Login to your account"
+            android:textColor="#604ff7"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Phần TextView chào mừng -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"> <!-- Giảm layout_weight để chiếm ít diện tích hơn -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Hello, welcome back to your account"
+            android:textColor="#9589fa"
+            android:textSize="18sp" /> <!-- Giảm textSize một chút để phù hợp hơn -->
+    </LinearLayout>
+
+    <!-- Phần nhập Username và Password -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <!-- E-mail Frame Layout -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:minHeight="0dp"
+            android:background="@drawable/border_login"
+            android:clipChildren="false">
+
+            <!-- Text for the border -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
+                android:background="#ffffff"
+                android:padding="4dp"
+                android:text="Username"
+                android:textColor="#6200EE"
+                android:textSize="14sp"
+                android:translationX="16dp"
+                android:translationY="-12dp" />
+
+            <!-- Input field -->
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="Your username"
+                android:minHeight="56dp"
+                android:padding="16dp"
+                android:textColor="#000"
+                android:textSize="16sp" />
+        </FrameLayout>
+
+        <!-- Password Frame Layout -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_login"
+            android:layout_marginTop="5dp">
+
+            <!-- Input field -->
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:hint="Your Password"
+                android:inputType="textPassword"
+                android:minHeight="56dp"
+                android:padding="16dp"
+                android:textColor="#000"
+                android:textSize="16sp"/>
+
+            <!-- Text for the border -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
+                android:background="#ffffff"
+                android:padding="4dp"
+                android:text="Password"
+                android:textColor="#6200EE"
+                android:textSize="14sp"
+                android:translationX="16dp"
+                android:translationY="-12dp" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/toast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="end"
+            android:text="Invalid username or password"
+            android:textColor="#ff0000"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingStart="10dp">
+
+            <!-- CheckBox (chiếm 1/5 width) -->
+            <CheckBox
+                android:id="@+id/myCheckbox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:buttonTint="#6200EE"
+                android:text="" />
+
+            <!-- TextView (chiếm 4/5 width) -->
+            <TextView
+                android:id="@+id/myTextView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:gravity="center_vertical"
+                android:text="Remember me"
+                android:textColor="#000" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|end"
+                android:text="Forgot Password?"
+                android:textColor="#9589fa" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.4"
+        android:padding="40dp">
+
+        <Button
+            android:id="@+id/button_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Login"
+            android:background="#7d6dfc" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Dòng phân cách với chữ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- Đường line bên trái -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#D3D3D3" />
+
+            <!-- TextView -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="or sign up with"
+                android:textColor="#808080"
+                android:textSize="14sp" />
+
+            <!-- Đường line bên phải -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#D3D3D3" />
+        </LinearLayout>
+
+        <!-- Dòng chứa các nút -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!-- Nút Facebook -->
+            <ImageButton
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/icon_login_background"
+                android:contentDescription="Facebook Button"
+                android:scaleType="center"
+                android:src="@drawable/ic_facebook" />
+
+            <!-- Nút Google -->
+            <ImageButton
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/icon_login_background"
+                android:contentDescription="Google Button"
+                android:scaleType="center"
+                android:src="@drawable/ic_google" />
+
+            <!-- Nút Apple -->
+            <ImageButton
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/icon_login_background"
+                android:contentDescription="Apple Button"
+                android:scaleType="center"
+                android:src="@drawable/ic_apple" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
