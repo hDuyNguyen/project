@@ -11,11 +11,14 @@ import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.controller.Repository;
+import com.example.powertrackingapp.controller.Usecase;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class MainActivity extends AppCompatActivity {
+
+    private final Usecase usecase = Usecase.getInstance();
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -23,8 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
 
-        Repository.getInstance().connectToServer();
-
+        usecase.connect();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -72,5 +74,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         finish(); // Đóng HomeActivity
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        usecase.disconnect();
     }
 }

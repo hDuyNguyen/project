@@ -12,10 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.powertrackingapp.R;
+import com.example.powertrackingapp.controller.Usecase;
+import com.example.powertrackingapp.model.User;
+
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText editUserName, editPassword;
     private Button buttonLogin;
+    private final Usecase usecase = Usecase.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         editUserName = findViewById(R.id.username);
         editPassword = findViewById(R.id.password);
         buttonLogin = findViewById(R.id.button_login);
+        buttonLogin.setBackgroundTintList(null);
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,7 +48,13 @@ public class LoginActivity extends AppCompatActivity {
                 String username = editUserName.getText().toString();
                 String password = editPassword.getText().toString();
 
-                if (username.equals("duyduy") && password.equals("123")) {
+                User user = new User();
+                try {
+                    user = usecase.login(username, password, MqttClient.generateClientId());
+                } catch (MqttException e) {
+                    throw new RuntimeException(e);
+                }
+                if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean("isLoggedIn", true);
                     editor.apply();

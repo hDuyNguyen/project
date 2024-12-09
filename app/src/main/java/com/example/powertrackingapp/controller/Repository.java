@@ -15,9 +15,12 @@ import java.util.concurrent.Executors;
 
 public class Repository {
 
+    private static final String TAG = "duynm";
+
     private static volatile Repository instance;
     private IMqttClient client;
     private ExecutorService executorService;
+    private String payload;
 
     private Repository() {
         executorService = Executors.newSingleThreadExecutor();
@@ -51,12 +54,47 @@ public class Repository {
                 options.setConnectionTimeout(10);
 
                 client.connect(options);
-                Log.i("duynm", "Kết nối thành công tới broker!");
+                Log.i(TAG, "Kết nối thành công tới broker!");
             } catch (MqttException e) {
-                Log.e("duynm", "Lỗi kết nối MQTT: ", e);
+                Log.e(TAG, "Lỗi kết nối MQTT: ", e);
             }
         });
     }
+
+    public String getInfoUser(String username, String password, String deviceId) throws MqttException {
+        String requestTopic = "login/client";
+        String requestMessage = String.format(
+                "{ \"username\": \"%s\", \"password\": \"%s\", \"deviceId\": \"%s\" }",
+                username, password, deviceId
+        );
+
+        client.publish(requestMessage, new MqttMessage(requestMessage.getBytes()));
+        Log.i(TAG, "Send request to: " + requestTopic);
+
+        String topicSubscribe = "login/client/" + deviceId;
+        client.subscribe(topicSubscribe);
+        Log.i(TAG, "Subscribe to topic: " + topicSubscribe);
+
+        client.setCallback(new MqttCallback() {
+            @Override
+            public void connectionLost(Throwable cause) {
+                Log.i(TAG, "connectionLost: " + cause);
+            }
+
+            @Override
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+                payload = new String(message.getPayload());
+            }
+
+            @Override
+            public void deliveryComplete(IMqttDeliveryToken token) {
+
+            }
+        });
+
+        return payload;
+    }
+
 
     public void disconnect() {
         try {
