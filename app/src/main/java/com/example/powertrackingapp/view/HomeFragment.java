@@ -1,5 +1,8 @@
 package com.example.powertrackingapp.view;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.R;
+import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.databinding.HomeBinding;
+import com.example.powertrackingapp.model.User;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -38,6 +43,16 @@ public class HomeFragment extends Fragment {
         binding = HomeBinding.inflate(inflater, container, false);
         setBackGroundButton();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        User user = SharedPreferencesHelper.getObject(requireContext(), "userInfo", User.class);
+        if (user != null) {
+            binding.userName.setText(user.getUsername());
+        }
     }
 
     @Override

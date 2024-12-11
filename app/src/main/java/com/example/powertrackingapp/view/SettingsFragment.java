@@ -11,10 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.R;
+import com.example.powertrackingapp.controller.Repository;
+import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.SettingBinding;
 
 public class SettingsFragment extends Fragment {
     SettingBinding binding;
+    private final Usecase usecase = Usecase.getInstance();
 
     @Nullable
     @Override
@@ -35,5 +38,12 @@ public class SettingsFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
+        binding.idAvatar.setOnClickListener(v -> {
+            usecase.logout(requireContext());
+        });
+    }
 }

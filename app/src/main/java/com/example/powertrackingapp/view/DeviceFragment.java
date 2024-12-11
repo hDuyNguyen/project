@@ -11,8 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.R;
+import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.databinding.DetailDeviceBinding;
 import com.example.powertrackingapp.databinding.DeviceBinding;
+import com.example.powertrackingapp.model.User;
 
 public class DeviceFragment extends Fragment {
     DeviceBinding binding;
@@ -38,5 +40,13 @@ public class DeviceFragment extends Fragment {
 //                        .commit();
 //            }
 //        });
+
+        User user = SharedPreferencesHelper.getObject(requireContext(), "userInfo", User.class);
+        if (user != null) {
+            binding.userName.setText(user.getUsername());
+
+        }
     }
+
+
 }

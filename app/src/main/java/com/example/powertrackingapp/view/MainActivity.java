@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity);
 
-        usecase.connect();
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -63,17 +61,6 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fragment_container_view, fragment)
                 .commit();
-    }
-
-    private void logout() {
-        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isLoggedIn", false); // Xóa trạng thái đăng nhập
-        editor.apply();
-
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish(); // Đóng HomeActivity
     }
 
     @Override

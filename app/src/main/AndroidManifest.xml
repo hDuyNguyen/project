@@ -24,4 +24,5 @@
         <activity android:name=".view.MainActivity"/>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

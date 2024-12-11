@@ -1,11 +1,21 @@
 package com.example.powertrackingapp.controller;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.example.powertrackingapp.model.User;
+import com.example.powertrackingapp.view.LoginActivity;
+import com.example.powertrackingapp.view.MainActivity;
 import com.google.gson.Gson;
 
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class Usecase {
+    private static final String TAG = "duynm";
 
     private static volatile Usecase instance;
     private final Repository repository = Repository.getInstance();
@@ -29,10 +39,22 @@ public class Usecase {
         repository.disconnect();
     }
 
-    public User login(String username, String password, String deviceId) throws MqttException {
+    public String login(String username, String password, String deviceId) throws MqttException {
         String userInfo = repository.getInfoUser(username, password, deviceId);
+        if (userInfo == null) {
+            Log.i(TAG, "userInfo null");
+        }
+        return repository.getInfoUser(username, password, deviceId);
+    }
 
-        Gson gson = new Gson();
-        return gson.fromJson(userInfo, User.class);
+    public void logout(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("isLoggedIn", false); // Xóa trạng thái đăng nhập
+        editor.apply();
+
+        Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
     }
 }
