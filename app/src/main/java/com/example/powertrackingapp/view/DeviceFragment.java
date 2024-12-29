@@ -47,6 +47,7 @@ public class DeviceFragment extends Fragment {
             User user = SharedPreferencesHelper.getUser(requireContext());
             if (user != null) {
                 binding.userName.setText(user.getFullName());
+                binding.userAddress.setText(user.getAddress());
             }
         }
     }
