@@ -22,7 +22,7 @@ public class Usecase {
 
     public static Usecase getInstance() {
         if (instance == null) {
-            synchronized (Repository.class) {
+            synchronized (Usecase.class) {
                 if (instance == null) {
                     instance = new Usecase();
                 }
@@ -31,20 +31,16 @@ public class Usecase {
         return instance;
     }
 
-    public void connect() {
-        repository.connectToServer();
-    }
-
     public void disconnect() {
         repository.disconnect();
     }
 
-    public String login(String username, String password, String deviceId) throws MqttException {
+    public String login(String username, String password, String deviceId) throws MqttException, InterruptedException {
         String userInfo = repository.getInfoUser(username, password, deviceId);
         if (userInfo == null) {
             Log.i(TAG, "userInfo null");
         }
-        return repository.getInfoUser(username, password, deviceId);
+        return userInfo;
     }
 
     public void logout(Context context) {

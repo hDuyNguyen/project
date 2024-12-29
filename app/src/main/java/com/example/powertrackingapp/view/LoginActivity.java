@@ -16,6 +16,8 @@ import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -67,29 +69,39 @@ public class LoginActivity extends AppCompatActivity {
                     textView.setVisibility(View.VISIBLE);
                     textView.setText("Invalid username or password");
                 } else {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    Map<String, String> map = null;
-                    try {
-                        map = objectMapper.readValue(loginMessage, Map.class);
-                        String role = map.get("role");
-                        String name = map.get("username");
-                        user.setUsername(name);
-                        user.setRole(role);
+                    // Parse chuỗi JSON thành JsonObject
+                    JsonObject jsonObject = JsonParser.parseString(loginMessage).getAsJsonObject();
 
-                        Gson gson = new Gson();
-                        String jsonUser = gson.toJson(user);
+                    // Lấy các trường trong JSON
+                    String fullName = jsonObject.get("fullName").getAsString();
+                    String address = jsonObject.get("address").getAsString();
+                    String name = jsonObject.get("username").getAsString();
+                    int userId = jsonObject.get("userId").getAsInt();
+                    String role = jsonObject.get("role").getAsString();
+//                    String email = jsonObject.get("email").getAsString();
+//                    String image = jsonObject.get("imageUrl").getAsString();
+                    String token = jsonObject.get("token").getAsString();
 
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putBoolean("isLoggedIn", true);
-                        editor.putString("userInfo", jsonUser);
-                        editor.apply();
+                    user.setUsername(name);
+                    user.setRole(role);
+//                    user.setEmail(email);
+//                    user.setImageUrl(image);
+                    user.setFullName(fullName);
+                    user.setAddress(address);
+                    user.setToken(token);
+                    user.setUserId(userId);
 
-                        assert role != null;
-                        if (role.equals("ROLE_USER")) {
-                            navigateHome();
-                        }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                    Gson gson = new Gson();
+                    String jsonUser = gson.toJson(user);
+
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean("isLoggedIn", true);
+                    editor.putString("userInfo", jsonUser);
+                    editor.apply();
+
+                    assert role != null;
+                    if (role.equals("ROLE_USER")) {
+                        navigateHome();
                     }
                 }
             }
