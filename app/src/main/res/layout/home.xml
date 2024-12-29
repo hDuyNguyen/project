@@ -116,14 +116,14 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     app:shapeAppearanceOverlay="@style/cycle"
-                    android:src="@drawable/img"
+                    android:src="@drawable/noi_ham"
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Thiết bị 1"
+                    android:text="Nồi hầm"
                     android:textSize="16sp"
                     android:textColor="#000"/>
             </LinearLayout>
@@ -145,14 +145,14 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     app:shapeAppearanceOverlay="@style/cycle"
-                    android:src="@drawable/img"
+                    android:src="@drawable/noi_com_dien"
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Thiết bị 2"
+                    android:text="Nồi cơm điện"
                     android:textSize="16sp"
                     android:textColor="#000"/>
             </LinearLayout>
@@ -174,14 +174,14 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     app:shapeAppearanceOverlay="@style/cycle"
-                    android:src="@drawable/img"
+                    android:src="@drawable/bep_tu"
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Thiết bị 3"
+                    android:text="Bếp từ"
                     android:textSize="16sp"
                     android:textColor="#000"/>
             </LinearLayout>
@@ -203,14 +203,14 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     app:shapeAppearanceOverlay="@style/cycle"
-                    android:src="@drawable/img"
+                    android:src="@drawable/may_say"
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Thiết bị 4"
+                    android:text="Máy sấy"
                     android:textSize="16sp"
                     android:textColor="#000"/>
             </LinearLayout>
@@ -232,15 +232,15 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     app:shapeAppearanceOverlay="@style/cycle"
-                    android:src="@drawable/img"
+                    android:src="@drawable/noi_chien_khong_dau"
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Thiết bị 5"
-                    android:textSize="16sp"
+                    android:text="Nồi chiên không dầu"
+                    android:textSize="14.5sp"
                     android:textColor="#000"/>
             </LinearLayout>
 
@@ -261,14 +261,14 @@
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     app:shapeAppearanceOverlay="@style/cycle"
-                    android:src="@drawable/img"
+                    android:src="@drawable/nong_lanh"
                     android:scaleType="centerCrop"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Thiết bị 6"
+                    android:text="Nóng lạnh"
                     android:textSize="16sp"
                     android:textColor="#000"/>
             </LinearLayout>
