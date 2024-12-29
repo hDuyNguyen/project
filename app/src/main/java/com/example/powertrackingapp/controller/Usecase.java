@@ -2,6 +2,10 @@ package com.example.powertrackingapp.controller;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.example.powertrackingapp.AppConstant.IS_LOGGED_IN;
+import static com.example.powertrackingapp.AppConstant.USER_SESSION;
+import static com.example.powertrackingapp.AppConstant.TAG;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +19,6 @@ import com.google.gson.Gson;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class Usecase {
-    private static final String TAG = "duynm";
 
     private static volatile Usecase instance;
     private final Repository repository = Repository.getInstance();
@@ -44,9 +47,9 @@ public class Usecase {
     }
 
     public void logout(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(USER_SESSION, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("isLoggedIn", false); // Xóa trạng thái đăng nhập
+        editor.putBoolean(IS_LOGGED_IN, false); // Xóa trạng thái đăng nhập
         editor.apply();
 
         Intent intent = new Intent(context, LoginActivity.class);

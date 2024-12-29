@@ -1,5 +1,7 @@
 package com.example.powertrackingapp.view;
 
+import static com.example.powertrackingapp.AppConstant.USER_INFO;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,10 +43,11 @@ public class DeviceFragment extends Fragment {
 //            }
 //        });
 
-        User user = SharedPreferencesHelper.getObject(requireContext(), "userInfo", User.class);
-        if (user != null) {
-            binding.userName.setText(user.getUsername());
-
+        if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
+            User user = SharedPreferencesHelper.getUser(requireContext());
+            if (user != null) {
+                binding.userName.setText(user.getFullName());
+            }
         }
     }
 

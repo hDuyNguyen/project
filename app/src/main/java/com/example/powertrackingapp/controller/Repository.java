@@ -2,6 +2,8 @@ package com.example.powertrackingapp.controller;
 
 import android.util.Log;
 
+import static com.example.powertrackingapp.AppConstant.TAG;
+
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -18,8 +20,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Repository {
-
-    private static final String TAG = "duynm";
 
     private static volatile Repository instance;
     private static IMqttClient client = null;

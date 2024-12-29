@@ -1,5 +1,7 @@
 package com.example.powertrackingapp.view;
 
+import static com.example.powertrackingapp.AppConstant.USER_INFO;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +30,11 @@ public class HistoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        User user = SharedPreferencesHelper.getObject(requireContext(), "userInfo", User.class);
-        if (user != null) {
-            binding.userName.setText(user.getUsername());
+        if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
+            User user = SharedPreferencesHelper.getUser(requireContext());
+            if (user != null) {
+                binding.userName.setText(user.getFullName());
+            }
         }
     }
 }

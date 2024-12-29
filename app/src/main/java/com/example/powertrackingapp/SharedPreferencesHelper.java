@@ -1,35 +1,43 @@
 package com.example.powertrackingapp;
 
+import static com.example.powertrackingapp.AppConstant.IS_LOGGED_IN;
+import static com.example.powertrackingapp.AppConstant.SHARED_REF;
+import static com.example.powertrackingapp.AppConstant.USER_INFO;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.powertrackingapp.model.User;
 import com.google.gson.Gson;
 
 public class SharedPreferencesHelper {
-    private static final String PREF_NAME = "userInfo";
 
-    public static void saveObject(Context context, String key, Object object) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    public static void saveUser(Context context, boolean isLoggedIn, User user) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_REF, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        editor.putBoolean(IS_LOGGED_IN, isLoggedIn);
+
         Gson gson = new Gson();
-        String jsonString = gson.toJson(object);
-        editor.putString(key, jsonString);
+        String jsonUser = gson.toJson(user);
+        editor.putString(USER_INFO, jsonUser);
+
         editor.apply();
     }
 
+    public static User getUser(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_REF, Context.MODE_PRIVATE);
 
-    public static <T> T getObject(Context context, String key, Class<T> classType) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String jsonString = sharedPreferences.getString(key, null);
-
-        if (jsonString == null) {
-            return null;
+        String jsonUser = sharedPreferences.getString(USER_INFO, null);
+        if (jsonUser != null) {
+            Gson gson = new Gson();
+            return gson.fromJson(jsonUser, User.class);
         }
-
-        Gson gson = new Gson();
-        return gson.fromJson(jsonString, classType);
+        return null;
     }
 
-
+    public static boolean isLoggedIn(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_REF, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(IS_LOGGED_IN, false);
+    }
 }

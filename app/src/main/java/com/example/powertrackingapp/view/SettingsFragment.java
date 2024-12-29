@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.R;
+import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.controller.Repository;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.SettingBinding;
+import com.example.powertrackingapp.model.User;
 
 public class SettingsFragment extends Fragment {
     SettingBinding binding;
@@ -45,5 +47,15 @@ public class SettingsFragment extends Fragment {
         binding.idAvatar.setOnClickListener(v -> {
             usecase.logout(requireContext());
         });
+
+        if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
+            User user = SharedPreferencesHelper.getUser(requireContext());
+            if (user != null) {
+                binding.textName.setText(user.getFullName());
+                binding.textAddress.setText(user.getAddress());
+
+            }
+        }
+
     }
 }

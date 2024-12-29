@@ -2,6 +2,8 @@ package com.example.powertrackingapp.view;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import static com.example.powertrackingapp.AppConstant.USER_INFO;
+
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -49,9 +51,11 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        User user = SharedPreferencesHelper.getObject(requireContext(), "userInfo", User.class);
-        if (user != null) {
-            binding.userName.setText(user.getUsername());
+        if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
+            User user = SharedPreferencesHelper.getUser(requireContext());
+            if (user != null) {
+                binding.userName.setText(user.getFullName());
+            }
         }
     }
 
