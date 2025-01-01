@@ -105,14 +105,14 @@ public class LoginActivity extends AppCompatActivity {
         String name = jsonObject.get("username").getAsString();
         int userId = jsonObject.get("userId").getAsInt();
         String role = jsonObject.get("role").getAsString();
-//      String email = jsonObject.get("email").getAsString();
-//      String image = jsonObject.get("imageUrl").getAsString();
+        String email = jsonObject.get("email").getAsString();
+        String image = jsonObject.get("imageUrl").getAsString();
         String token = jsonObject.get("token").getAsString();
 
         user.setUsername(name);
         user.setRole(role);
-//      user.setEmail(email);
-//      user.setImageUrl(image);
+        user.setEmail(email);
+        user.setImageUrl(image);
         user.setFullName(fullName);
         user.setAddress(address);
         user.setToken(token);

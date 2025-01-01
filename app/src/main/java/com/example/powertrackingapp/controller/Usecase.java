@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.example.powertrackingapp.model.Alert;
 import com.example.powertrackingapp.model.User;
 import com.example.powertrackingapp.view.LoginActivity;
 import com.example.powertrackingapp.view.MainActivity;
@@ -55,5 +56,13 @@ public class Usecase {
         Intent intent = new Intent(context, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
+    }
+
+    public String getHistory(Alert alert, String deviceId) throws Exception {
+        String history = repository.getHistory(alert, deviceId);
+        if (history == null) {
+            Log.i(TAG, "userInfo null");
+        }
+        return history;
     }
 }

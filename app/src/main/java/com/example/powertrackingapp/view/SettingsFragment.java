@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.controller.Repository;
@@ -52,7 +53,14 @@ public class SettingsFragment extends Fragment {
             User user = SharedPreferencesHelper.getUser(requireContext());
             if (user != null) {
                 binding.textName.setText(user.getFullName());
+                binding.textEmail.setText(user.getEmail());
                 binding.textAddress.setText(user.getAddress());
+
+                Glide.with(this)
+                        .load(user.getImageUrl())
+                        .placeholder(R.drawable.avatar)
+                        .error(R.drawable.avatar)
+                        .into(binding.idAvatar);
             }
         }
 

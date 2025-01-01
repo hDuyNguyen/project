@@ -10,15 +10,38 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.powertrackingapp.SharedPreferencesHelper;
+import com.example.powertrackingapp.controller.DatePickerController;
 import com.example.powertrackingapp.databinding.DeviceAbnormalHistoryBinding;
+import com.example.powertrackingapp.model.DatePickerModel;
+import com.example.powertrackingapp.model.User;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class DeviceAbnormalHistory extends Fragment implements DatePicker.DatePickerListener {
     DeviceAbnormalHistoryBinding binding;
+    DatePickerModel datePickerModel;
+    DatePickerController datePickerController;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DeviceAbnormalHistoryBinding.inflate(inflater, container, false);
+
+        datePickerModel = new DatePickerModel();
+        datePickerController = DatePickerController.getInstance(datePickerModel);
+
+        binding.radioGroup.check(binding.radioA.getId());
+        // Lấy ngày giờ hiện tại
+        Calendar calendar = Calendar.getInstance();
+
+        // Định dạng ngày giờ
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDateTime = formatter.format(calendar.getTime());
+        binding.startDate.setText(formattedDateTime);
+        binding.endDate.setText(formattedDateTime);
+
         return binding.getRoot();
     }
 
@@ -66,9 +89,26 @@ public class DeviceAbnormalHistory extends Fragment implements DatePicker.DatePi
 
         if (viewId == binding.calendarStart.getId()) {
             binding.startDate.setText(formatDate);
+            datePickerController.setStartDate(formatDate);
         }
         if (viewId == binding.calendarEnd.getId()) {
             binding.endDate.setText(formatDate);
+            datePickerController.setEndDate(formatDate);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String startDate = datePickerController.getStartDate();
+        String endDate = datePickerController.getEndDate();
+
+        if (startDate != null) {
+            binding.startDate.setText(startDate);
+        }
+
+        if (endDate != null) {
+            binding.endDate.setText(endDate);
         }
     }
 }

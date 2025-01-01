@@ -4,6 +4,11 @@ import android.util.Log;
 
 import static com.example.powertrackingapp.AppConstant.TAG;
 
+import com.example.powertrackingapp.model.Alert;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -24,6 +29,7 @@ public class Repository {
     private static volatile Repository instance;
     private static IMqttClient client = null;
     private String payload;
+    private final boolean[] responseReceived = {false};
 
     private Repository() {
     }
@@ -72,8 +78,24 @@ public class Repository {
                 username, password, deviceId
         );
 
-        final boolean[] responseReceived = {false};
+        handleCallBack();
 
+        client.publish(requestTopic, new MqttMessage(requestMessage.getBytes()));
+        Log.i(TAG, "Send request to: " + requestTopic);
+
+        client.subscribe(topicSubscribe);
+        Log.i(TAG, "Subscribe to topic: " + topicSubscribe);
+
+        // Vòng lặp chờ phản hồi trong 2 giây
+        long startTime = System.currentTimeMillis();
+        while (!responseReceived[0] && (System.currentTimeMillis() - startTime) < 2000) {
+            Thread.sleep(100); // Chờ 100ms trước khi kiểm tra lại
+        }
+
+        return payload;
+    }
+
+    private void handleCallBack() {
         client.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
@@ -91,20 +113,6 @@ public class Repository {
 
             }
         });
-
-        client.publish(requestTopic, new MqttMessage(requestMessage.getBytes()));
-        Log.i(TAG, "Send request to: " + requestTopic);
-
-        client.subscribe(topicSubscribe);
-        Log.i(TAG, "Subscribe to topic: " + topicSubscribe);
-
-        // Vòng lặp chờ phản hồi trong 2 giây
-        long startTime = System.currentTimeMillis();
-        while (!responseReceived[0] && (System.currentTimeMillis() - startTime) < 2000) {
-            Thread.sleep(100); // Chờ 100ms trước khi kiểm tra lại
-        }
-
-        return payload;
     }
 
 
@@ -122,4 +130,33 @@ public class Repository {
     public boolean isConnected() {
         return client != null && client.isConnected();
     }
+
+    public String getHistory(Alert alert, String deviceId) throws Exception {
+        String requestTopic = "history/client";
+        client.subscribe(requestTopic);
+
+        String topicSubscribe = "history/client/" + deviceId;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        MqttMessage message = new MqttMessage();
+        message.setPayload(objectMapper.writeValueAsBytes(alert));
+
+        client.publish(requestTopic, message);
+        Log.i(TAG, "Send request to: " + requestTopic);
+
+        client.subscribe(topicSubscribe);
+        Log.i(TAG, "Subscribe to topic: " + topicSubscribe);
+
+        handleCallBack();
+
+        // Vòng lặp chờ phản hồi trong 2 giây
+        long startTime = System.currentTimeMillis();
+        while (!responseReceived[0] && (System.currentTimeMillis() - startTime) < 2000) {
+            Thread.sleep(100); // Chờ 100ms trước khi kiểm tra lại
+        }
+
+        return payload;
+    }
+
 }

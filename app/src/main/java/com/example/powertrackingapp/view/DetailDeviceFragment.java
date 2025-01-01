@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.powertrackingapp.controller.DatePickerController;
 import com.example.powertrackingapp.databinding.DetailDeviceBinding;
+import com.example.powertrackingapp.model.DatePickerModel;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -21,12 +23,16 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class DetailDeviceFragment extends Fragment implements DatePicker.DatePickerListener {
     DetailDeviceBinding binding;
+    DatePickerModel datePickerModel;
+    DatePickerController datePickerController;
 
     private final List<String> value = Arrays.asList("27/11", "28/11", "29/11");
 
@@ -34,6 +40,19 @@ public class DetailDeviceFragment extends Fragment implements DatePicker.DatePic
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DetailDeviceBinding.inflate(inflater, container, false);
+
+        datePickerModel = new DatePickerModel();
+        datePickerController = DatePickerController.getInstance(datePickerModel);
+
+        binding.radioGroup.check(binding.radioA.getId());
+        // Lấy ngày giờ hiện tại
+        Calendar calendar = Calendar.getInstance();
+
+        // Định dạng ngày giờ
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDateTime = formatter.format(calendar.getTime());
+        binding.startDate.setText(formattedDateTime);
+        binding.endDate.setText(formattedDateTime);
         return binding.getRoot();
     }
 
@@ -113,9 +132,11 @@ public class DetailDeviceFragment extends Fragment implements DatePicker.DatePic
 
         if (viewId == binding.calendarStart.getId()) {
             binding.startDate.setText(formatDate);
+            datePickerController.setStartDate(formatDate);
         }
         if (viewId == binding.calendarEnd.getId()) {
             binding.endDate.setText(formatDate);
+            datePickerController.setEndDate(formatDate);
         }
     }
 }

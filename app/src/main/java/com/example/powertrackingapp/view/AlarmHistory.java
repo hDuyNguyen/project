@@ -1,6 +1,7 @@
 package com.example.powertrackingapp.view;
 
 import android.app.DatePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,20 +13,49 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.R;
+import com.example.powertrackingapp.SharedPreferencesHelper;
+import com.example.powertrackingapp.controller.DatePickerController;
+import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.AlarmHistoryBinding;
+import com.example.powertrackingapp.model.Alert;
+import com.example.powertrackingapp.model.DatePickerModel;
+import com.example.powertrackingapp.model.User;
+
+import org.eclipse.paho.client.mqttv3.MqttClient;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class AlarmHistory extends Fragment implements DatePicker.DatePickerListener {
     AlarmHistoryBinding binding;
+    DatePickerModel datePickerModel;
+    DatePickerController datePickerController;
+    User user;
+
+    private final Usecase usecase = Usecase.getInstance();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = AlarmHistoryBinding.inflate(inflater, container, false);
+        user = SharedPreferencesHelper.getUser(requireContext());
+        datePickerModel = new DatePickerModel();
+        datePickerController = DatePickerController.getInstance(datePickerModel);
+
+        binding.radioGroup.check(binding.radioA.getId());
+        // Lấy ngày giờ hiện tại
+        Calendar calendar = Calendar.getInstance();
+
+        // Định dạng ngày giờ
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String formattedDateTime = formatter.format(calendar.getTime());
+        binding.startDate.setText(formattedDateTime);
+        binding.endDate.setText(formattedDateTime);
+
         return binding.getRoot();
     }
 
@@ -36,7 +66,8 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
         binding.deviceAbnormal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager().beginTransaction()
+                getParentFragmentManager()
+                        .beginTransaction()
                         .replace(R.id.container_history, new DeviceAbnormalHistory())
                         .addToBackStack(null)
                         .commit();
@@ -71,9 +102,44 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
 
         if (viewId == binding.calendarStart.getId()) {
             binding.startDate.setText(formatDate);
+            datePickerController.setStartDate(formatDate);
         }
         if (viewId == binding.calendarEnd.getId()) {
             binding.endDate.setText(formatDate);
+            datePickerController.setEndDate(formatDate);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String startDate = datePickerController.getStartDate();
+        String endDate = datePickerController.getEndDate();
+
+        if (startDate != null) {
+            binding.startDate.setText(startDate);
+        }
+
+        if (endDate != null) {
+            binding.endDate.setText(endDate);
+        }
+    }
+
+    private void showHistory() throws Exception {
+        String deviceId = MqttClient.generateClientId();
+        Alert alert = new Alert();
+        alert.setUserId(user.getUserId());
+        alert.setDeviceId(deviceId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            alert.setStartDate(LocalDate.parse(datePickerController.getStartDate()));
+            alert.setEndDate(LocalDate.parse(datePickerController.getEndDate()));
+            alert.setStartHour(LocalTime.of(0, 0, 0));
+            alert.setEndHour(LocalTime.of(23, 59, 0));
+        }
+        alert.setPageNumber(0);
+        alert.setPageSize(10);
+        String history = usecase.getHistory(alert, deviceId);
+
+        
     }
 }
