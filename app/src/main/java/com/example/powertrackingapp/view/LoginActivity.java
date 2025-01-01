@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         //Kiểm tra trạng thái đăng nhập
-        SharedPreferences sharedPreferences = getSharedPreferences(USER_SESSION, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_REF, MODE_PRIVATE);
         boolean isLoggedIn = sharedPreferences.getBoolean(IS_LOGGED_IN, false);
 
         if (isLoggedIn) {
