@@ -3,7 +3,7 @@ package com.example.powertrackingapp.controller;
 import static android.content.Context.MODE_PRIVATE;
 
 import static com.example.powertrackingapp.AppConstant.IS_LOGGED_IN;
-import static com.example.powertrackingapp.AppConstant.USER_SESSION;
+import static com.example.powertrackingapp.AppConstant.SHARED_REF;
 import static com.example.powertrackingapp.AppConstant.TAG;
 
 import android.content.Context;
@@ -48,7 +48,7 @@ public class Usecase {
     }
 
     public void logout(Context context) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(USER_SESSION, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_REF, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(IS_LOGGED_IN, false); // Xóa trạng thái đăng nhập
         editor.apply();

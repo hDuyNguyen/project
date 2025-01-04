@@ -5,8 +5,6 @@ import static com.example.powertrackingapp.AppConstant.MESSAGE_FAIL;
 import static com.example.powertrackingapp.AppConstant.MESSAGE_TOAST;
 import static com.example.powertrackingapp.AppConstant.ROLE_USER;
 import static com.example.powertrackingapp.AppConstant.SHARED_REF;
-import static com.example.powertrackingapp.AppConstant.USER_INFO;
-import static com.example.powertrackingapp.AppConstant.USER_SESSION;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
