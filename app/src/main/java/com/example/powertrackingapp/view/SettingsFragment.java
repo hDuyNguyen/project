@@ -2,9 +2,11 @@ package com.example.powertrackingapp.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ import com.example.powertrackingapp.controller.Repository;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.SettingBinding;
 import com.example.powertrackingapp.model.User;
+import com.example.powertrackingapp.view.Dialog.ChangeUserInfoDialog;
 
 public class SettingsFragment extends Fragment {
     SettingBinding binding;
@@ -45,8 +48,11 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.idAvatar.setOnClickListener(v -> {
-            usecase.logout(requireContext());
+        binding.idAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMenu();
+            }
         });
 
         if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
@@ -55,6 +61,7 @@ public class SettingsFragment extends Fragment {
                 binding.textName.setText(user.getFullName());
                 binding.textEmail.setText(user.getEmail());
                 binding.textAddress.setText(user.getAddress());
+                binding.textPhone.setText(user.getPhoneNumber());
 
                 Glide.with(this)
                         .load(user.getImageUrl())
@@ -63,6 +70,36 @@ public class SettingsFragment extends Fragment {
                         .into(binding.idAvatar);
             }
         }
+    }
 
+    private void showMenu() {
+        binding.idAvatar.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(getContext(), binding.idAvatar);
+            popupMenu.getMenuInflater().inflate(R.menu.user_select, popupMenu.getMenu());
+
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    if (menuItem.getItemId() == R.id.change_info) {
+                        showPopupChangeInfo();
+                        return true;
+                    }
+                    else if (menuItem.getItemId() == R.id.logout) {
+                        usecase.logout(requireContext());
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            });
+
+            popupMenu.show();
+        });
+    }
+
+    private void showPopupChangeInfo() {
+        ChangeUserInfoDialog dialog = new ChangeUserInfoDialog();
+        dialog.show(getChildFragmentManager(),  "Change userInfo");
     }
 }

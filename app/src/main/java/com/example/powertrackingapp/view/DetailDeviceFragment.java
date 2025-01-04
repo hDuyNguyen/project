@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.powertrackingapp.controller.DatePickerController;
 import com.example.powertrackingapp.databinding.DetailDeviceBinding;
 import com.example.powertrackingapp.model.DatePickerModel;
+import com.example.powertrackingapp.view.Dialog.DatePicker;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;

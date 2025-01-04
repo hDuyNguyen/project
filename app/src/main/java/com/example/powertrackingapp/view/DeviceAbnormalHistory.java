@@ -10,11 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.controller.DatePickerController;
 import com.example.powertrackingapp.databinding.DeviceAbnormalHistoryBinding;
 import com.example.powertrackingapp.model.DatePickerModel;
-import com.example.powertrackingapp.model.User;
+import com.example.powertrackingapp.view.Dialog.DatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

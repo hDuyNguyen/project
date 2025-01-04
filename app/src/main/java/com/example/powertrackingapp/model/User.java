@@ -9,6 +9,7 @@ public class User {
     private String address;
     private int userId;
     private String token;
+    private String phoneNumber;
 
     public String getUsername() {
         return username;
@@ -72,5 +73,13 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

@@ -1,6 +1,5 @@
 package com.example.powertrackingapp.view;
 
-import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,15 +19,14 @@ import com.example.powertrackingapp.databinding.AlarmHistoryBinding;
 import com.example.powertrackingapp.model.Alert;
 import com.example.powertrackingapp.model.DatePickerModel;
 import com.example.powertrackingapp.model.User;
+import com.example.powertrackingapp.view.Dialog.DatePicker;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class AlarmHistory extends Fragment implements DatePicker.DatePickerListener {
     AlarmHistoryBinding binding;
