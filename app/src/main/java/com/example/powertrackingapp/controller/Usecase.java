@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.powertrackingapp.model.Alert;
+import com.example.powertrackingapp.model.UpdateUserInfo;
 import com.example.powertrackingapp.model.User;
 import com.example.powertrackingapp.view.LoginActivity;
 import com.example.powertrackingapp.view.MainActivity;
@@ -64,5 +65,13 @@ public class Usecase {
             Log.i(TAG, "userInfo null");
         }
         return history;
+    }
+
+    public String editUserInfo(UpdateUserInfo updateUserInfo, String deviceId) throws Exception {
+        String result =  repository.editUserInfo(updateUserInfo, deviceId);
+        if (result == null) {
+            Log.i(TAG, "update info false");
+        }
+        return result;
     }
 }

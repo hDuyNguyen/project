@@ -85,7 +85,7 @@ public class SettingsFragment extends Fragment {
                         return true;
                     }
                     else if (menuItem.getItemId() == R.id.logout) {
-                        usecase.logout(requireContext());
+                        usecase. logout(requireContext());
                         return true;
                     }
                     else {

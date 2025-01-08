@@ -1,5 +1,6 @@
 package com.example.powertrackingapp.view;
 
+import static com.example.powertrackingapp.AppConstant.DEVICE_ID;
 import static com.example.powertrackingapp.AppConstant.IS_LOGGED_IN;
 import static com.example.powertrackingapp.AppConstant.MESSAGE_FAIL;
 import static com.example.powertrackingapp.AppConstant.MESSAGE_TOAST;
@@ -65,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editPassword.getText().toString();
 
                 try {
-                    loginMessage = usecase.login(username, password, MqttClient.generateClientId());
+                    loginMessage = usecase.login(username, password, DEVICE_ID);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

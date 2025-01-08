@@ -8,6 +8,7 @@ public class AppConstant {
     public static final String SHARED_REF = "powerTracking";
     public static final String IS_LOGGED_IN = "isLoggedIn";
     public static final String USER_INFO = "userInfo";
+    public static final String DEVICE_ID = "1234";
     public static final String ROLE_USER = "ROLE_USER";
 
 }

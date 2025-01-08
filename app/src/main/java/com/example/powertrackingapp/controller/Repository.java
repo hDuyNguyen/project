@@ -5,6 +5,7 @@ import android.util.Log;
 import static com.example.powertrackingapp.AppConstant.TAG;
 
 import com.example.powertrackingapp.model.Alert;
+import com.example.powertrackingapp.model.UpdateUserInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -132,6 +133,8 @@ public class Repository {
     }
 
     public String getHistory(Alert alert, String deviceId) throws Exception {
+        connectToServer();
+
         String requestTopic = "history/client";
         client.subscribe(requestTopic);
 
@@ -141,6 +144,36 @@ public class Repository {
         objectMapper.registerModule(new JavaTimeModule());
         MqttMessage message = new MqttMessage();
         message.setPayload(objectMapper.writeValueAsBytes(alert));
+
+        client.publish(requestTopic, message);
+        Log.i(TAG, "Send request to: " + requestTopic);
+
+        client.subscribe(topicSubscribe);
+        Log.i(TAG, "Subscribe to topic: " + topicSubscribe);
+
+        handleCallBack();
+
+        // Vòng lặp chờ phản hồi trong 2 giây
+        long startTime = System.currentTimeMillis();
+        while (!responseReceived[0] && (System.currentTimeMillis() - startTime) < 2000) {
+            Thread.sleep(100); // Chờ 100ms trước khi kiểm tra lại
+        }
+
+        return payload;
+    }
+
+    public String editUserInfo(UpdateUserInfo updateUserInfo, String deviceId) throws Exception {
+        connectToServer();
+
+        String requestTopic = "edit-user-info/client";
+        client.subscribe(requestTopic);
+
+        String topicSubscribe = "edit-user-info/client/" + deviceId;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        MqttMessage message = new MqttMessage();
+        message.setPayload(objectMapper.writeValueAsBytes(updateUserInfo));
 
         client.publish(requestTopic, message);
         Log.i(TAG, "Send request to: " + requestTopic);

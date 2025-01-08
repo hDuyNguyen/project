@@ -3,24 +3,31 @@ package com.example.powertrackingapp.view.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.bumptech.glide.Glide;
+import com.example.powertrackingapp.AppConstant;
 import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
+import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.ChangeUserInfoBinding;
+import com.example.powertrackingapp.model.UpdateUserInfo;
 import com.example.powertrackingapp.model.User;
 
 public class ChangeUserInfoDialog extends DialogFragment {
     ChangeUserInfoBinding binding;
+    Usecase usecase  = Usecase.getInstance();
+    User user;
 
     @Nullable
     @Override
@@ -44,7 +51,7 @@ public class ChangeUserInfoDialog extends DialogFragment {
         }
 
         if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
-            User user = SharedPreferencesHelper.getUser(requireContext());
+            user = SharedPreferencesHelper.getUser(requireContext());
             if (user != null) {
                 binding.editUsername.setText(user.getFullName());
                 binding.editEmail.setText(user.getEmail());
@@ -58,7 +65,27 @@ public class ChangeUserInfoDialog extends DialogFragment {
         });
 
         binding.ok.setOnClickListener(v -> {
-            //todo
+            dismiss();
+            UpdateUserInfo updateUserInfo = new UpdateUserInfo();
+            updateUserInfo.setUsersId(user.getUserId());
+            updateUserInfo.setToken(user.getToken());
+
+            updateUserInfo.setFullName(String.valueOf(binding.editUsername.getText()));
+            updateUserInfo.setPhone(String.valueOf(binding.editPhoneNumber.getText()));
+            updateUserInfo.setEmail(String.valueOf(binding.editEmail.getText()));
+            updateUserInfo.setAddress(String.valueOf(binding.editAddress.getText()));
+
+
+            try {
+                String result = usecase.editUserInfo(updateUserInfo, AppConstant.DEVICE_ID);
+                if (result != null) {
+                    Toast.makeText(getContext(), "Edit successful!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "Edit failure!", Toast.LENGTH_LONG).show();
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 }

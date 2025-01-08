@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.powertrackingapp.AppConstant;
 import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.controller.DatePickerController;
@@ -124,10 +125,9 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
     }
 
     private void showHistory() throws Exception {
-        String deviceId = MqttClient.generateClientId();
         Alert alert = new Alert();
         alert.setUserId(user.getUserId());
-        alert.setDeviceId(deviceId);
+        alert.setDeviceId(AppConstant.DEVICE_ID);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             alert.setStartDate(LocalDate.parse(datePickerController.getStartDate()));
             alert.setEndDate(LocalDate.parse(datePickerController.getEndDate()));
@@ -136,7 +136,7 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
         }
         alert.setPageNumber(0);
         alert.setPageSize(10);
-        String history = usecase.getHistory(alert, deviceId);
+        String history = usecase.getHistory(alert, AppConstant.DEVICE_ID);
 
         
     }
