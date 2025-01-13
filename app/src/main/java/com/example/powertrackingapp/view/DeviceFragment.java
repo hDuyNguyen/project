@@ -42,7 +42,16 @@ public class DeviceFragment extends Fragment {
 //                        .commit();
 //            }
 //        });
+        getUserInfo();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserInfo();
+    }
+
+    private void getUserInfo() {
         if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
             User user = SharedPreferencesHelper.getUser(requireContext());
             if (user != null) {

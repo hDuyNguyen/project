@@ -29,7 +29,16 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getUserInfo();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUserInfo();
+    }
+
+    private void getUserInfo() {
         if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
             User user = SharedPreferencesHelper.getUser(requireContext());
             if (user != null) {

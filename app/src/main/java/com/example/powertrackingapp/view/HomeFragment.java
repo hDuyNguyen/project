@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
+import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.HomeBinding;
 import com.example.powertrackingapp.model.User;
 import com.github.mikephil.charting.charts.BarChart;
@@ -36,6 +37,8 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     HomeBinding binding;
+    User user;
+    Usecase usecase = Usecase.getInstance();
 
     private final List<String> value = Arrays.asList("27/11", "28/11", "29/11");
 
@@ -50,20 +53,24 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
-            User user = SharedPreferencesHelper.getUser(requireContext());
-            if (user != null) {
-                binding.userName.setText(user.getFullName());
-                binding.userAddress.setText(user.getAddress());
-            }
-        }
+        getUserInfo();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        getUserInfo();
         createChart();
+    }
+
+    private void getUserInfo() {
+        if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
+            user = SharedPreferencesHelper.getUser(requireContext());
+            if (user != null) {
+                binding.userName.setText(user.getFullName());
+                binding.userAddress.setText(user.getAddress());
+            }
+        }
     }
 
     private void createChart() {

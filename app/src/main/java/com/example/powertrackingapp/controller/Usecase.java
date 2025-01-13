@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.powertrackingapp.model.Alert;
+import com.example.powertrackingapp.model.PowerConsumption;
 import com.example.powertrackingapp.model.UpdateUserInfo;
 import com.example.powertrackingapp.model.User;
 import com.example.powertrackingapp.view.LoginActivity;
@@ -71,6 +72,14 @@ public class Usecase {
         String result =  repository.editUserInfo(updateUserInfo, deviceId);
         if (result == null) {
             Log.i(TAG, "update info false");
+        }
+        return result;
+    }
+
+    public String getPowerConsumption(PowerConsumption powerConsumption) throws Exception {
+        String result =  repository.getPowerConsumption(powerConsumption);
+        if (result == null) {
+            Log.i(TAG, "data consumption is null");
         }
         return result;
     }

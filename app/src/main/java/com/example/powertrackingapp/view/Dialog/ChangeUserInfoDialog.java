@@ -1,5 +1,7 @@
 package com.example.powertrackingapp.view.Dialog;
 
+import static com.example.powertrackingapp.AppConstant.DEVICE_ID;
+
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -74,10 +76,12 @@ public class ChangeUserInfoDialog extends DialogFragment {
             updateUserInfo.setPhone(String.valueOf(binding.editPhoneNumber.getText()));
             updateUserInfo.setEmail(String.valueOf(binding.editEmail.getText()));
             updateUserInfo.setAddress(String.valueOf(binding.editAddress.getText()));
+            updateUserInfo.setImageUrl("abc");
+            updateUserInfo.setRealDeviceId(DEVICE_ID);
 
 
             try {
-                String result = usecase.editUserInfo(updateUserInfo, AppConstant.DEVICE_ID);
+                String result = usecase.editUserInfo(updateUserInfo, DEVICE_ID);
                 if (result != null) {
                     Toast.makeText(getContext(), "Edit successful!", Toast.LENGTH_LONG).show();
                 } else {
