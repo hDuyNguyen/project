@@ -7,6 +7,7 @@ import static com.example.powertrackingapp.AppConstant.USER_INFO;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.i("duynm", "onResume: ");
         getUserInfo();
         createChart();
     }

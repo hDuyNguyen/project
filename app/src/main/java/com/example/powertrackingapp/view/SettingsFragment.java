@@ -64,7 +64,7 @@ public class SettingsFragment extends Fragment {
         getUserInfo();
     }
 
-    private void getUserInfo() {
+    public void getUserInfo() {
         if (SharedPreferencesHelper.isLoggedIn(requireContext())) {
             User user = SharedPreferencesHelper.getUser(requireContext());
             if (user != null) {

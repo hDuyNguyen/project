@@ -10,5 +10,8 @@ public class AppConstant {
     public static final String USER_INFO = "userInfo";
     public static final String DEVICE_ID = "123456";
     public static final String ROLE_USER = "ROLE_USER";
+    public static final String USERNAME = "USERNAME";
+    public static final String PASSWORD = "PASSWORD";
+    public static final int TIME_OUT = 5000;
 
 }

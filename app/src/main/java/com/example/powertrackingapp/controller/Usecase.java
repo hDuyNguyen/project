@@ -41,7 +41,7 @@ public class Usecase {
         repository.disconnect();
     }
 
-    public String login(String username, String password, String deviceId) throws MqttException, InterruptedException {
+    public String login(String username, String password, String deviceId) throws Exception {
         String userInfo = repository.getInfoUser(username, password, deviceId);
         if (userInfo == null) {
             Log.i(TAG, "userInfo null");

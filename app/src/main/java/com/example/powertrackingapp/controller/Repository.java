@@ -1,30 +1,27 @@
 package com.example.powertrackingapp.controller;
 
-import android.util.Log;
-
 import static com.example.powertrackingapp.AppConstant.TAG;
+import static com.example.powertrackingapp.AppConstant.TIME_OUT;
+
+import android.util.Log;
 
 import com.example.powertrackingapp.model.Alert;
 import com.example.powertrackingapp.model.PowerConsumption;
 import com.example.powertrackingapp.model.UpdateUserInfo;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.eclipse.paho.client.mqttv3.IMqttClient;
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import java.nio.channels.InterruptedByTimeoutException;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class Repository {
 
@@ -70,54 +67,9 @@ public class Repository {
         }
     }
 
-    public String getInfoUser(String username, String password, String deviceId) throws MqttException, InterruptedException {
-        connectToServer();
-
-        String topicSubscribe = "login/client/" + deviceId;
-        client.subscribe(topicSubscribe);
-        Log.i(TAG, "Subscribe to topic: " + topicSubscribe);
-
-        String requestMessage = String.format(
-                "{ \"username\": \"%s\", \"password\": \"%s\", \"deviceId\": \"%s\" }",
-                username, password, deviceId
-        );
-
-        handleCallBack();
-
-        String requestTopic = "login/client";
-        client.publish(requestTopic, new MqttMessage(requestMessage.getBytes()));
-        Log.i(TAG, "Send request to: " + requestTopic);
-
-
-        // Vòng lặp chờ phản hồi trong 2 giây
-        long startTime = System.currentTimeMillis();
-        while (!responseReceived[0] && (System.currentTimeMillis() - startTime) < 2000) {
-            Thread.sleep(100); // Chờ 100ms trước khi kiểm tra lại
-        }
-
-        return payload;
+    public boolean isConnected() {
+        return client != null && client.isConnected();
     }
-
-    private void handleCallBack() {
-        client.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable cause) {
-                Log.i(TAG, "connectionLost: " + cause);
-            }
-
-            @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {
-                payload = new String(message.getPayload());
-                responseReceived[0] = true;
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {
-
-            }
-        });
-    }
-
 
     public void disconnect() {
         try {
@@ -130,94 +82,81 @@ public class Repository {
         }
     }
 
-    public boolean isConnected() {
-        return client != null && client.isConnected();
-    }
-
-    public String getHistory(Alert alert, String deviceId) throws Exception {
+    public String sendRequestAndWaitForResponse(String requestTopic, String subscribeTopic, String payload, int timeoutMillis) throws Exception {
         connectToServer();
 
-        String topicSubscribe = "history/client/" + deviceId;
+        // Dùng CountDownLatch để chờ phản hồi
+        CountDownLatch latch = new CountDownLatch(1);
+        final StringBuilder responsePayload = new StringBuilder();
 
-        client.subscribe(topicSubscribe);
-        Log.i(TAG, "Subscribe to topic: " + topicSubscribe);
+        // Đăng ký callback riêng cho topic cần nhận phản hồi
+        IMqttMessageListener messageListener = (topic, message) -> {
+            if (topic.equals(subscribeTopic)) {
+                responsePayload.append(new String(message.getPayload()));
+                latch.countDown(); // Báo hiệu đã nhận phản hồi
+            }
+        };
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        MqttMessage message = new MqttMessage();
-        message.setPayload(objectMapper.writeValueAsBytes(alert));
+        client.subscribe(subscribeTopic, 1, messageListener);
+        Log.i(TAG, "Subscribed to topic: " + subscribeTopic);
 
-        handleCallBack();
+        // Gửi yêu cầu đến topic
+        client.publish(requestTopic, new MqttMessage(payload.getBytes()));
+        Log.i(TAG, "Published to topic: " + requestTopic);
 
-        String requestTopic = "history/client";
-        client.publish(requestTopic, message);
-        Log.i(TAG, "Send request to: " + requestTopic);
-
-
-        // Vòng lặp chờ phản hồi trong 2 giây
-        long startTime = System.currentTimeMillis();
-        while (!responseReceived[0] && (System.currentTimeMillis() - startTime) < 2000) {
-            Thread.sleep(100); // Chờ 100ms trước khi kiểm tra lại
+        // Chờ phản hồi hoặc timeout
+        if (!latch.await(timeoutMillis, TimeUnit.MILLISECONDS)) {
+            throw new TimeoutException("Timeout waiting for response from: " + subscribeTopic);
         }
 
-        return payload;
+        // Hủy đăng ký listener sau khi nhận phản hồi
+        client.unsubscribe(subscribeTopic);
+        return responsePayload.toString();
+    }
+
+    public String getInfoUser(String username, String password, String deviceId) throws Exception {
+        String payload = String.format(
+                "{ \"username\": \"%s\", \"password\": \"%s\", \"deviceId\": \"%s\" }",
+                username, password, deviceId
+        );
+
+        String requestTopic = "login/client";
+        String responseTopic = "login/client/" + deviceId;
+
+        return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
     }
 
     public String editUserInfo(UpdateUserInfo updateUserInfo, String deviceId) throws Exception {
-        connectToServer();
-
-        String topicSubscribe = "edit-user-info/client/" + deviceId;
-
-        client.subscribe(topicSubscribe);
-        Log.i(TAG, "Subscribe to topic: " + topicSubscribe);
-
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        MqttMessage message = new MqttMessage();
-        message.setPayload(objectMapper.writeValueAsBytes(updateUserInfo));
-
-        handleCallBack();
+        String payload = objectMapper.writeValueAsString(updateUserInfo);
 
         String requestTopic = "edit-user-info/client";
-        client.publish(requestTopic, message);
-        Log.i(TAG, "Send request to: " + requestTopic);
+        String responseTopic = "edit-user-info/client/" + deviceId;
 
-        // Vòng lặp chờ phản hồi trong 2 giây
-        long startTime = System.currentTimeMillis();
-        while (!responseReceived[0] && (System.currentTimeMillis() - startTime) < 2000) {
-            Thread.sleep(100); // Chờ 100ms trước khi kiểm tra lại
-        }
+        return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
+    }
 
-        return payload;
+    public String getHistory(Alert alert, String deviceId) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String payload = objectMapper.writeValueAsString(alert);
+
+        String requestTopic = "history/client";
+        String responseTopic = "history/client/" + deviceId;
+
+        return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
     }
 
     public String getPowerConsumption(PowerConsumption powerConsumption) throws Exception {
-        connectToServer();
-
-        String topicSubscribe = "power-consumption/client/" + powerConsumption.getRealDeviceId();
-
-        client.subscribe(topicSubscribe);
-        Log.i(TAG, "Subscribe to topic: " + topicSubscribe);
-
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        MqttMessage message = new MqttMessage();
-        message.setPayload(objectMapper.writeValueAsBytes(powerConsumption));
-
-        handleCallBack();
+        String payload = objectMapper.writeValueAsString(powerConsumption);
 
         String requestTopic = "power-consumption/client";
-        client.publish(requestTopic, message);
-        Log.i(TAG, "Send request to: " + requestTopic);
+        String responseTopic = "power-consumption/client/" + powerConsumption.getRealDeviceId();
 
-
-        // Vòng lặp chờ phản hồi trong 2 giây
-        long startTime = System.currentTimeMillis();
-        while (!responseReceived[0] && (System.currentTimeMillis() - startTime) < 2000) {
-            Thread.sleep(100); // Chờ 100ms trước khi kiểm tra lại
-        }
-
-        return payload;
+        return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
     }
 
 }

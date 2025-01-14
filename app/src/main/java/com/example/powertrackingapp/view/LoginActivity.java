@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
+import com.example.powertrackingapp.Utils;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -76,9 +77,9 @@ public class LoginActivity extends AppCompatActivity {
                     textView.setVisibility(View.VISIBLE);
                     textView.setText(MESSAGE_TOAST);
                 } else {
-                    convertUserInfo(loginMessage);
+                    Utils.convertUserInfo(user, loginMessage);
 
-                    SharedPreferencesHelper.saveUser(getApplicationContext(), true, user);
+                    SharedPreferencesHelper.saveUser(getApplicationContext(), true, user, username, password);
 
                     if (user.getRole().equals(ROLE_USER)) {
                         navigateHome();
@@ -92,29 +93,5 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    private void convertUserInfo(String message) {
-        // Parse chuỗi JSON thành JsonObject
-        JsonObject jsonObject = JsonParser.parseString(message).getAsJsonObject();
-
-        // Lấy các trường trong JSON
-        String fullName = jsonObject.get("fullName").getAsString();
-        String address = jsonObject.get("address").getAsString();
-        String name = jsonObject.get("username").getAsString();
-        int userId = jsonObject.get("userId").getAsInt();
-        String role = jsonObject.get("role").getAsString();
-        String email = jsonObject.get("email").getAsString();
-        String image = jsonObject.get("imageUrl").getAsString();
-        String token = jsonObject.get("token").getAsString();
-
-        user.setUsername(name);
-        user.setRole(role);
-        user.setEmail(email);
-        user.setImageUrl(image);
-        user.setFullName(fullName);
-        user.setAddress(address);
-        user.setToken(token);
-        user.setUserId(userId);
     }
 }
