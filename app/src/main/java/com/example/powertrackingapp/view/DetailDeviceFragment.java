@@ -29,13 +29,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 public class DetailDeviceFragment extends Fragment implements DatePicker.DatePickerListener {
     DetailDeviceBinding binding;
     DatePickerModel datePickerModel;
     DatePickerController datePickerController;
 
-    private final List<String> value = Arrays.asList("27/11", "28/11", "29/11");
+//    private final List<String> value = Arrays.asList("27/11", "28/11", "29/11");
 
     @Nullable
     @Override
@@ -89,20 +90,24 @@ public class DetailDeviceFragment extends Fragment implements DatePicker.DatePic
         BarChart barChart = binding.chart;
         barChart.getAxisRight().setDrawLabels(false);
 
+        List<Integer> colors = new ArrayList<>();
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, 80f));
-        entries.add(new BarEntry(1, 10f));
-        entries.add(new BarEntry(2, 50f));
+        for (int i = 0; i < 10; i++) {
+            Random random = new Random();
+            int randomNumber = random.nextInt(991) + 10;
+            entries.add(new BarEntry(i, randomNumber));
+            colors.add(getRandomColor());
+        }
 
         YAxis yAxis = barChart.getAxisLeft();
         yAxis.setAxisMaximum(0f);
-        yAxis.setAxisMaximum(100f);
+        yAxis.setAxisMaximum(1000f);
         yAxis.setAxisLineWidth(2f);
         yAxis.setAxisLineColor(Color.BLACK);
         yAxis.setLabelCount(20);
 
         BarDataSet barDataSet = new BarDataSet(entries, "Type");
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setColors(colors);
 
         BarData barData = new BarData(barDataSet);
         barChart.setData(barData);
@@ -110,7 +115,7 @@ public class DetailDeviceFragment extends Fragment implements DatePicker.DatePic
         barChart.getDescription().setEnabled(false);
         barChart.invalidate();
 
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(value));
+//        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(value));
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         barChart.getXAxis().setAxisLineColor(Color.BLACK);
         barChart.getXAxis().setGranularity(1f);
@@ -125,6 +130,31 @@ public class DetailDeviceFragment extends Fragment implements DatePicker.DatePic
         barChart.getXAxis().setDrawGridLines(false);
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.setScaleXEnabled(false);
+    }
+
+    private int getRandomColor() {
+        // Giá trị RGB của màu #86a9fc (màu sáng hơn)
+        int startR = 0, startG = 41, startB = 135;
+
+        // Giá trị RGB của màu #074ff7 (màu tối hơn)
+        int endR = 12, endG = 79, endB = 255;
+
+        // Đảm bảo khoảng giá trị hợp lệ
+        int minR = Math.min(startR, endR);
+        int maxR = Math.max(startR, endR);
+        int minG = Math.min(startG, endG);
+        int maxG = Math.max(startG, endG);
+        int minB = Math.min(startB, endB);
+        int maxB = Math.max(startB, endB);
+
+        // Sinh giá trị ngẫu nhiên cho mỗi kênh màu
+        Random random = new Random();
+        int r = minR + random.nextInt(maxR - minR + 1);
+        int g = minG + random.nextInt(maxG - minG + 1);
+        int b = minB + random.nextInt(maxB - minB + 1);
+
+        // Trả về đối tượng Color
+        return Color.rgb(r, g, b);
     }
 
     @Override

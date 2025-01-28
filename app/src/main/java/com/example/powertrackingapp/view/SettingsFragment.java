@@ -71,7 +71,8 @@ public class SettingsFragment extends Fragment {
                 binding.textName.setText(user.getFullName());
                 binding.textEmail.setText(user.getEmail());
                 binding.textAddress.setText(user.getAddress());
-                binding.textPhone.setText(user.getPhoneNumber());
+//                binding.textPhone.setText(user.getPhoneNumber());
+                binding.textPhone.setText("0123456789");
 
                 Glide.with(this)
                         .load(user.getImageUrl())

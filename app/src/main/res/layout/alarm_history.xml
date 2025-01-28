@@ -161,16 +161,46 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
-            android:paddingBottom="20dp">
+            android:paddingBottom="100dp"
+            android:orientation="vertical"
+            android:background="@drawable/background_layout">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="History"
+                android:padding="10dp"
+                android:layout_weight="1"
+                android:text="Nồi cơm điện: 14/10/2024-10:40:32: Có bất thường xảy ra"
                 android:textColor="@color/black"
-                android:gravity="center"
-                android:textSize="40sp"
-                android:background="@drawable/background_layout"/>
+                android:gravity="start"
+                android:textSize="15sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:text="Nóng lạnh: 20/10/2024-19:20:00: Có bất thường xảy ra"
+                android:textColor="@color/black"
+                android:gravity="start"
+                android:textSize="15sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:text="Nồi hầm: 22/11/2024-15:06:56: Có bất thường xảy ra"
+                android:textColor="@color/black"
+                android:gravity="start"
+                android:textSize="15sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:text="Nồi hầm: 1/12/2024-9:10:56: Có bất thường xảy ra"
+                android:textColor="@color/black"
+                android:gravity="start"
+                android:textSize="15sp"/>
         </LinearLayout>
 
         <LinearLayout

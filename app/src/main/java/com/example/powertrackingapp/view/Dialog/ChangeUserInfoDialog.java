@@ -88,12 +88,10 @@ public class ChangeUserInfoDialog extends DialogFragment {
             try {
                 String result = usecase.editUserInfo(updateUserInfo, DEVICE_ID);
                 if (result != null) {
-                    Toast.makeText(getContext(), "Edit successful!", Toast.LENGTH_LONG).show();
-                    refreshData();
-                    Fragment fragment = getParentFragmentManager().findFragmentByTag("SettingsFragment");
-                    if (fragment instanceof SettingsFragment) {
-                        ((SettingsFragment) fragment).getUserInfo();
-                    }
+                    Toast.makeText(getContext(), "Edit successful! Please login again", Toast.LENGTH_LONG).show();
+
+                    Thread.sleep(2000);
+//                    usecase.logout(requireContext());
                 } else {
                     Toast.makeText(getContext(), "Edit failure!", Toast.LENGTH_LONG).show();
                 }
