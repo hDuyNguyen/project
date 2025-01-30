@@ -11,6 +11,15 @@ public class User {
     private String token;
     private String phoneNumber;
 
+    public User() {}
+
+    public User(String fullName, String email, String address, String phoneNumber) {
+        this.fullName = fullName;
+        this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getUsername() {
         return username;
     }
