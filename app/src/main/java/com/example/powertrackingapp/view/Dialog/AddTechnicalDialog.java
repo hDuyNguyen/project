@@ -24,6 +24,7 @@ import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.Utils;
 import com.example.powertrackingapp.controller.Usecase;
+import com.example.powertrackingapp.databinding.AddTechnicalBinding;
 import com.example.powertrackingapp.databinding.AddUserBinding;
 import com.example.powertrackingapp.databinding.ChangeUserInfoBinding;
 import com.example.powertrackingapp.model.UpdateUserInfo;
@@ -32,15 +33,15 @@ import com.example.powertrackingapp.view.SettingsFragment;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class AddUserDialog extends DialogFragment {
-    AddUserBinding binding;
+public class AddTechnicalDialog extends DialogFragment {
+    AddTechnicalBinding binding;
 //    Usecase usecase = Usecase.getInstance();
 //    User user;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = AddUserBinding.inflate(inflater, container, false);
+        binding = AddTechnicalBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -68,11 +69,11 @@ public class AddUserDialog extends DialogFragment {
 //            }
 //        }
 
-        binding.cancelUserAddDialog.setOnClickListener(v -> {
+        binding.cancelTechnicalAddDialog.setOnClickListener(v -> {
             dismiss();
         });
 
-        binding.okUserAddDialog.setOnClickListener(v -> {
+        binding.okTechnicalAddDialog.setOnClickListener(v -> {
             dismiss();
             UpdateUserInfo updateUserInfo = new UpdateUserInfo();
 //            updateUserInfo.setUsersId(user.getUserId());

@@ -49,5 +49,13 @@ public class AdminSetting extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+
+        binding.manageTechnical.setOnClickListener(v -> {
+            Fragment technicalListFragment =  new TechnicalListFragment();
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container_view, technicalListFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
     }
 }

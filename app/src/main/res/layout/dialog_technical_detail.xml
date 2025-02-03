@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffff">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="Thêm người dùng"
+        android:text="Thông tin chi tiết"
         android:textColor="#000"
         android:textSize="25sp"
         android:textAlignment="textStart"
@@ -27,62 +28,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Tài khoản:"
-            android:gravity="center_vertical"
-            android:textColor="#000"/>
-        <EditText
-            android:id="@+id/add_account_name"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:layout_marginStart="15dp"
-            android:textColor="#000"
-            android:paddingStart="5dp"
-            android:background="@drawable/edit_text_border"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="Mật khẩu:"
-            android:gravity="center_vertical"
-            android:textColor="#000"/>
-        <EditText
-            android:id="@+id/add_password"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="4"
-            android:layout_marginStart="15dp"
-            android:textColor="#000"
-            android:paddingStart="5dp"
-            android:inputType="textPassword"
-            android:background="@drawable/edit_text_border"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
             android:text="Tên:"
             android:gravity="center_vertical"
             android:textColor="#000"/>
         <EditText
-            android:id="@+id/add_username"
+            android:id="@+id/info_technical_username"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
@@ -107,7 +57,7 @@
             android:text="Email:"
             android:textColor="#000"/>
         <EditText
-            android:id="@+id/add_email"
+            android:id="@+id/info_technical_email"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
@@ -132,7 +82,7 @@
             android:text="Số điện thoại"
             android:textColor="#000"/>
         <EditText
-            android:id="@+id/add_phone_number"
+            android:id="@+id/info_technical_phone_number"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
@@ -157,7 +107,7 @@
             android:text="Địa chỉ"
             android:textColor="#000"/>
         <EditText
-            android:id="@+id/add_address"
+            android:id="@+id/info_technical_address"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
@@ -167,25 +117,35 @@
             android:background="@drawable/edit_text_border"/>
     </LinearLayout>
 
+    <!-- Container for the buttons -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
-        android:layout_margin="20dp">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp">
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"/>
+        <!-- Nút Đóng -->
         <Button
-            android:id="@+id/cancel_user_add_dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Đóng"
-            android:layout_marginEnd="20dp"/>
+            android:id="@+id/technical_dialog_ok_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Đóng" />
 
+        <!-- Nút Thay đổi -->
         <Button
-            android:id="@+id/ok_user_add_dialog"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="OK"/>
+            android:id="@+id/technical_dialog_cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Thay đổi"
+            android:layout_marginStart="10dp" />
     </LinearLayout>
 </LinearLayout>

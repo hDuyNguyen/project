@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="#ffffff">
+
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/dialog_technical_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Xác nhận xóa technical"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:gravity="start"
+        android:paddingBottom="10dp" />
+
+    <!-- Nội dung -->
+    <TextView
+        android:id="@+id/dialog_technical_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Bạn có chắc chắn muốn xóa technical này không?"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:gravity="start"
+        android:paddingBottom="20dp" />
+
+    <!-- Container for the buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"/>
+        <!-- Nút OK -->
+        <Button
+            android:id="@+id/dialog_cancel_confirm_technical_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Đóng"
+            android:textSize="12sp"/>
+
+        <!-- Nút Cancel -->
+        <Button
+            android:id="@+id/dialog_ok_confirm_technical_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Xác nhận"
+            android:textSize="12sp"
+            android:layout_marginStart="10dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
