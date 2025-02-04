@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "813220753452",
+    "project_id": "datn-2d281",
+    "storage_bucket": "datn-2d281.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813220753452:android:7fa6a28119c0327f726189",
+        "android_client_info": {
+          "package_name": "com.example.powertrackingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7t6ZYX4RGA2LvjDRvuSajSfM98xXFNsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,11 +3,13 @@ package com.example.powertrackingapp;
 import static com.example.powertrackingapp.AppConstant.IS_LOGGED_IN;
 import static com.example.powertrackingapp.AppConstant.PASSWORD;
 import static com.example.powertrackingapp.AppConstant.SHARED_REF;
+import static com.example.powertrackingapp.AppConstant.TOKEN_NOTIFY;
 import static com.example.powertrackingapp.AppConstant.USERNAME;
 import static com.example.powertrackingapp.AppConstant.USER_INFO;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.powertrackingapp.model.User;
 import com.google.gson.Gson;
@@ -27,6 +29,20 @@ public class SharedPreferencesHelper {
         editor.putString(USER_INFO, jsonUser);
 
         editor.apply();
+    }
+
+    public static void saveTokenNotify(Context context, String token) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_REF, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(TOKEN_NOTIFY, token);
+        Log.i("duynm", "saveTokenNotify: ");
+        editor.apply();
+    }
+
+    public static String getTokenNotify(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_REF, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(TOKEN_NOTIFY, null);
     }
 
     public static User getUser(Context context) {

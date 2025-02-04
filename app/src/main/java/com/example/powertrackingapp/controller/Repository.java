@@ -82,6 +82,21 @@ public class Repository {
         }
     }
 
+    public void sendTokenToServer(String topic, String message) {
+        try {
+            if (client != null && client.isConnected()) {
+                MqttMessage mqttMessage = new MqttMessage(message.getBytes());
+                mqttMessage.setQos(1);
+                client.publish(topic, mqttMessage);
+                Log.d(TAG, "Gửi MQTT: " + message);
+            } else {
+                Log.e(TAG, "MQTT chưa kết nối, không thể gửi tin nhắn.");
+            }
+        } catch (MqttException e) {
+            Log.e(TAG, "Lỗi khi gửi tin nhắn MQTT: " + e.getMessage());
+        }
+    }
+
     public String sendRequestAndWaitForResponse(String requestTopic, String subscribeTopic, String payload, int timeoutMillis) throws Exception {
         connectToServer();
 

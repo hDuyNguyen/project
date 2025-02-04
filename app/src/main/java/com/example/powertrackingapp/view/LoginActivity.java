@@ -23,6 +23,7 @@ import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.Utils;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.model.User;
+import com.example.powertrackingapp.service.FirebaseToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -68,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 try {
                     loginMessage = usecase.login(username, password, DEVICE_ID);
+                    FirebaseToken.sendTokenToServer(LoginActivity.this);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

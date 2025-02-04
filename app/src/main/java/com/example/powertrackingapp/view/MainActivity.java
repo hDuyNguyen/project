@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             if (item.getItemId() == R.id.menu_settings) {
-                openFragment(new AdminSetting());
+//                openFragment(new AdminSetting());
 //                switch (user.getRole()) {
 //                    case ROLE_USER:
-//                        openFragment(new SettingsFragment());
+                        openFragment(new SettingsFragment());
 //                        break;
 //                    case ROLE_ADMIN:
 //                        openFragment(new AdminSetting());
