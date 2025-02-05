@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
-import com.example.powertrackingapp.controller.Repository;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.SettingBinding;
 import com.example.powertrackingapp.model.User;

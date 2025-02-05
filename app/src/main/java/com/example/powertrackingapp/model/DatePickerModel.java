@@ -1,7 +1,5 @@
 package com.example.powertrackingapp.model;
 
-import java.util.Calendar;
-
 public class DatePickerModel {
     private String startDate;
     private String endDate;

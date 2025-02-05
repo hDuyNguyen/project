@@ -5,7 +5,6 @@ import static com.example.powertrackingapp.AppConstant.DEVICE_ID;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,20 +15,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
-import com.bumptech.glide.Glide;
-import com.example.powertrackingapp.AppConstant;
-import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.Utils;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.ChangeUserInfoBinding;
 import com.example.powertrackingapp.model.UpdateUserInfo;
 import com.example.powertrackingapp.model.User;
-import com.example.powertrackingapp.view.SettingsFragment;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 public class ChangeUserInfoDialog extends DialogFragment {
     ChangeUserInfoBinding binding;

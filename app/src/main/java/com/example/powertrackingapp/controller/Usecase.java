@@ -1,7 +1,6 @@
 package com.example.powertrackingapp.controller;
 
 import static android.content.Context.MODE_PRIVATE;
-
 import static com.example.powertrackingapp.AppConstant.IS_LOGGED_IN;
 import static com.example.powertrackingapp.AppConstant.SHARED_REF;
 import static com.example.powertrackingapp.AppConstant.TAG;
@@ -14,12 +13,7 @@ import android.util.Log;
 import com.example.powertrackingapp.model.Alert;
 import com.example.powertrackingapp.model.PowerConsumption;
 import com.example.powertrackingapp.model.UpdateUserInfo;
-import com.example.powertrackingapp.model.User;
 import com.example.powertrackingapp.view.LoginActivity;
-import com.example.powertrackingapp.view.MainActivity;
-import com.google.gson.Gson;
-
-import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class Usecase {
 

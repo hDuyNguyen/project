@@ -1,20 +1,15 @@
 package com.example.powertrackingapp.model;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.R;
-import com.example.powertrackingapp.model.User;
-import com.example.powertrackingapp.view.TechnicalListFragment;
-import com.example.powertrackingapp.view.UserListFragment;
 
 import java.util.List;
 

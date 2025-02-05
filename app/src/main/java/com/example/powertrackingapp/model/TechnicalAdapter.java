@@ -12,9 +12,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.R;
-import com.example.powertrackingapp.model.User;
 import com.example.powertrackingapp.view.TechnicalListFragment;
-import com.example.powertrackingapp.view.UserListFragment;
 
 import java.util.List;
 

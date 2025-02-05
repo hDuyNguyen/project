@@ -1,9 +1,6 @@
 package com.example.powertrackingapp.view;
 
-import static com.example.powertrackingapp.AppConstant.USER_INFO;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
-import com.example.powertrackingapp.databinding.DetailDeviceBinding;
 import com.example.powertrackingapp.databinding.DeviceBinding;
 import com.example.powertrackingapp.model.User;
 

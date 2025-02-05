@@ -1,9 +1,7 @@
 package com.example.powertrackingapp.view;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +9,11 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.databinding.AdminBinding;
-import com.example.powertrackingapp.databinding.HomeBinding;
 
 public class AdminSetting extends Fragment {
     AdminBinding binding;

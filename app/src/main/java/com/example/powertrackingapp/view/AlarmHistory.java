@@ -2,23 +2,21 @@ package com.example.powertrackingapp.view;
 
 import static com.example.powertrackingapp.AppConstant.TAG;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.AppConstant;
-import com.example.powertrackingapp.HandleJson;
 import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
+import com.example.powertrackingapp.Utils;
 import com.example.powertrackingapp.controller.DatePickerController;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.AlarmHistoryBinding;
@@ -28,11 +26,8 @@ import com.example.powertrackingapp.model.HistoryAdapter;
 import com.example.powertrackingapp.model.User;
 import com.example.powertrackingapp.view.Dialog.DatePicker;
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
-
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -157,7 +152,7 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
 
         if (history != null) {
             Thread.sleep(1000);
-            historyList = HandleJson.convertJsonToStringHistory(history);
+            historyList = Utils.convertJsonToStringHistory(history);
         }
     }
 }

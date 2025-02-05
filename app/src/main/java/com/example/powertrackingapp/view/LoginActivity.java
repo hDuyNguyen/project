@@ -24,16 +24,6 @@ import com.example.powertrackingapp.Utils;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.model.User;
 import com.example.powertrackingapp.service.FirebaseToken;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttException;
-
-import java.io.IOException;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText editUserName, editPassword;

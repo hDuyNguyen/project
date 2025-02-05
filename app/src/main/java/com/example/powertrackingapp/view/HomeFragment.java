@@ -1,16 +1,12 @@
 package com.example.powertrackingapp.view;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import static com.example.powertrackingapp.AppConstant.TAG;
-import static com.example.powertrackingapp.AppConstant.USER_INFO;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -29,7 +25,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.HomeBinding;
@@ -40,12 +35,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
