@@ -2,6 +2,7 @@ package com.example.powertrackingapp.view.Dialog;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -52,5 +55,22 @@ public class DatePicker extends DialogFragment implements DatePickerDialog.OnDat
         calendar.set(year, month, dayOfMonth);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         return dateFormat.format(calendar.getTime());
+    }
+
+    public static LocalDate convertStringToLocalDate(String date) {
+        LocalDate finalDate = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate parsedDate = LocalDate.parse(date, formatter);
+
+            // Lấy giá trị năm, tháng, ngày
+            int year = parsedDate.getYear();
+            int month = parsedDate.getMonthValue();
+            int day = parsedDate.getDayOfMonth();
+
+            // Tạo LocalDate bằng LocalDate.of()
+            finalDate = LocalDate.of(year, month, day);
+        }
+        return finalDate;
     }
 }

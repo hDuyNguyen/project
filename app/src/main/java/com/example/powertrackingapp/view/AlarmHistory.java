@@ -1,17 +1,22 @@
 package com.example.powertrackingapp.view;
 
+import static com.example.powertrackingapp.AppConstant.TAG;
+
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.AppConstant;
+import com.example.powertrackingapp.HandleJson;
 import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.controller.DatePickerController;
@@ -19,6 +24,7 @@ import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.AlarmHistoryBinding;
 import com.example.powertrackingapp.model.Alert;
 import com.example.powertrackingapp.model.DatePickerModel;
+import com.example.powertrackingapp.model.HistoryAdapter;
 import com.example.powertrackingapp.model.User;
 import com.example.powertrackingapp.view.Dialog.DatePicker;
 
@@ -27,13 +33,16 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class AlarmHistory extends Fragment implements DatePicker.DatePickerListener {
     AlarmHistoryBinding binding;
     DatePickerModel datePickerModel;
     DatePickerController datePickerController;
     User user;
+    List<String> historyList = new ArrayList<>();
 
     private final Usecase usecase = Usecase.getInstance();
 
@@ -107,6 +116,16 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
             binding.endDate.setText(formatDate);
             datePickerController.setEndDate(formatDate);
         }
+
+        try {
+            showHistory(
+                    DatePicker.convertStringToLocalDate(binding.startDate.getText().toString()),
+                    DatePicker.convertStringToLocalDate(binding.endDate.getText().toString()));
+
+            binding.historyList.setAdapter(new HistoryAdapter(getActivity(), this, historyList));
+        } catch (Exception e) {
+            Log.e(TAG, "onDateSet: ", e);
+        }
     }
 
     @Override
@@ -124,20 +143,21 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
         }
     }
 
-    private void showHistory() throws Exception {
+    private void showHistory(LocalDate startDate, LocalDate endDate) throws Exception {
         Alert alert = new Alert();
         alert.setUserId(user.getUserId());
-        alert.setDeviceId(AppConstant.DEVICE_ID);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            alert.setStartDate(LocalDate.parse(datePickerController.getStartDate()));
-            alert.setEndDate(LocalDate.parse(datePickerController.getEndDate()));
-            alert.setStartHour(LocalTime.of(0, 0, 0));
-            alert.setEndHour(LocalTime.of(23, 59, 0));
-        }
+        alert.setToken(user.getToken());
+        alert.setRealDeviceId(AppConstant.DEVICE_ID);
+        alert.setStartDate(startDate);
+        alert.setEndDate(endDate);
         alert.setPageNumber(0);
         alert.setPageSize(10);
         String history = usecase.getHistory(alert, AppConstant.DEVICE_ID);
+        Log.i(TAG, "showHistory: " + history);
 
-        
+        if (history != null) {
+            Thread.sleep(1000);
+            historyList = HandleJson.convertJsonToStringHistory(history);
+        }
     }
 }

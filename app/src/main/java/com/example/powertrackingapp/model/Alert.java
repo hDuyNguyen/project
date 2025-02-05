@@ -9,9 +9,10 @@ public class Alert {
     private LocalDate endDate;
     private Integer pageNumber;
     private Integer pageSize;
-    private String deviceId;
+    private String realDeviceId;
     private LocalTime startHour;
     private LocalTime endHour;
+    private String token;
 
     public int getUserId() {
         return userId;
@@ -53,12 +54,12 @@ public class Alert {
         this.pageSize = pageSize;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public String getRealDeviceId() {
+        return realDeviceId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setRealDeviceId(String realDeviceId) {
+        this.realDeviceId = realDeviceId;
     }
 
     public LocalTime getStartHour() {
@@ -75,5 +76,13 @@ public class Alert {
 
     public void setEndHour(LocalTime endHour) {
         this.endHour = endHour;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
