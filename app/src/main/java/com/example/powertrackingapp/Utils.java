@@ -4,6 +4,7 @@ import com.example.powertrackingapp.model.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -64,5 +65,27 @@ public class Utils {
             }
         }
         return results;
+    }
+
+    public static void convertJsonToArrayPowerConsumption(List<String> dayList, List<Float> powerList, String json) {
+        // Chuyển chuỗi JSON thành đối tượng JSON
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
+        JsonArray dataArray = jsonObject.getAsJsonArray("data");
+
+        // Duyệt qua từng phần tử trong mảng "data"
+        for (int i = 0; i < dataArray.size(); i++) {
+            JsonObject dataObject = dataArray.get(i).getAsJsonObject();
+
+            // Lấy giá trị "date" và chuyển thành chuỗi ngày tháng
+            JsonArray dateArray = dataObject.getAsJsonArray("date");
+            String date = dateArray.get(2).getAsInt() + "/" + dateArray.get(1).getAsInt(); // "ngày/tháng"
+
+            // Lấy giá trị "powerSum"
+            float powerSum = dataObject.get("powerSum").getAsFloat();
+
+            // Thêm vào danh sách
+            dayList.add(date);
+            powerList.add(powerSum);
+        }
     }
 }

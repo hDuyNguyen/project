@@ -15,6 +15,10 @@ public class AppConstant {
     public static final String ROLE_TECHNICAL = "ROLE_TECHNICAL";
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
+    public static final String WRONG_OLD_PASSWORD = "Mật khẩu cũ không chính xác";
+    public static final String WRONG_REPEAT_PASSWORD = "Nhập lại mật khẩu không trùng khớp";
     public static final int TIME_OUT = 5000;
+    public static final String DEVICE_NAME = "0000000003";
+
 
 }

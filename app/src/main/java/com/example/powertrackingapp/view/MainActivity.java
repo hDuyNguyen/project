@@ -1,5 +1,9 @@
 package com.example.powertrackingapp.view;
 
+import static com.example.powertrackingapp.AppConstant.ROLE_ADMIN;
+import static com.example.powertrackingapp.AppConstant.ROLE_TECHNICAL;
+import static com.example.powertrackingapp.AppConstant.ROLE_USER;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
@@ -51,15 +55,16 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
             if (item.getItemId() == R.id.menu_settings) {
-//                openFragment(new AdminSetting());
-//                switch (user.getRole()) {
-//                    case ROLE_USER:
+                openFragment(new AdminSetting());
+                switch (user.getRole()) {
+                    case ROLE_USER:
                         openFragment(new SettingsFragment());
-//                        break;
-//                    case ROLE_ADMIN:
-//                        openFragment(new AdminSetting());
-//                        break;
-//                }
+                        break;
+                    case ROLE_ADMIN:
+                    case ROLE_TECHNICAL:
+                        openFragment(new AdminSetting());
+                        break;
+                }
                 return true;
             }
             return false;

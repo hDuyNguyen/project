@@ -19,6 +19,7 @@ import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.SettingBinding;
 import com.example.powertrackingapp.model.User;
 import com.example.powertrackingapp.view.Dialog.ChangeUserInfoDialog;
+import com.example.powertrackingapp.view.Dialog.EditPasswordDialog;
 
 public class SettingsFragment extends Fragment {
     SettingBinding binding;
@@ -51,6 +52,13 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 showMenu();
+            }
+        });
+
+        binding.resetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPopupChangePassword();
             }
         });
 
@@ -111,5 +119,10 @@ public class SettingsFragment extends Fragment {
     private void showPopupChangeInfo() {
         ChangeUserInfoDialog dialog = new ChangeUserInfoDialog();
         dialog.show(getChildFragmentManager(),  "Change userInfo");
+    }
+
+    private void showPopupChangePassword() {
+        EditPasswordDialog dialog = new EditPasswordDialog();
+        dialog.show(getChildFragmentManager(),  "Change password");
     }
 }

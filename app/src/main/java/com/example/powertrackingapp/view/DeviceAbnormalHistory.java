@@ -38,8 +38,11 @@ public class DeviceAbnormalHistory extends Fragment implements DatePicker.DatePi
         // Định dạng ngày giờ
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDateTime = formatter.format(calendar.getTime());
-        binding.startDate.setText(formattedDateTime);
         binding.endDate.setText(formattedDateTime);
+
+        calendar.add(Calendar.MONTH, -5);
+        String startDateTime = formatter.format(calendar.getTime());
+        binding.startDate.setText(startDateTime);
 
         return binding.getRoot();
     }

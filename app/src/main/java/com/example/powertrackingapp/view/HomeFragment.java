@@ -1,5 +1,7 @@
 package com.example.powertrackingapp.view;
 
+import static com.example.powertrackingapp.AppConstant.DEVICE_ID;
+import static com.example.powertrackingapp.AppConstant.DEVICE_NAME;
 import static com.example.powertrackingapp.AppConstant.TAG;
 
 import android.app.NotificationChannel;
@@ -26,8 +28,10 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.SharedPreferencesHelper;
+import com.example.powertrackingapp.Utils;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.databinding.HomeBinding;
+import com.example.powertrackingapp.model.PowerConsumption;
 import com.example.powertrackingapp.model.User;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -35,9 +39,12 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -45,8 +52,8 @@ public class HomeFragment extends Fragment {
     HomeBinding binding;
     User user;
     Usecase usecase = Usecase.getInstance();
-
-//    private final List<String> value = Arrays.asList("27/11", "28/11", "29/11");
+    List<String> dayList = new ArrayList<>();
+    List<Float> powerList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -64,6 +71,26 @@ public class HomeFragment extends Fragment {
         binding.button1.setOnClickListener(v -> {
             sendFullScreenNotification();
         });
+
+        PowerConsumption powerConsumption = new PowerConsumption();
+        powerConsumption.setToken(user.getToken());
+        powerConsumption.setDeviceName(DEVICE_NAME);
+        powerConsumption.setRealDeviceId(DEVICE_ID);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDate endDate = LocalDate.now();
+            LocalDate startDate = endDate.minusMonths(5);
+            powerConsumption.setEndDate(endDate);
+            powerConsumption.setStartDate(startDate);
+        }
+
+        try {
+            String result = usecase.getPowerConsumption(powerConsumption);
+            Utils.convertJsonToArrayPowerConsumption(dayList, powerList, result);
+            Log.i(TAG, "result: " + result);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void sendFullScreenNotification() {
@@ -152,16 +179,14 @@ public class HomeFragment extends Fragment {
 
         List<Integer> colors = new ArrayList<>();
         ArrayList<BarEntry> entries = new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
-            Random random = new Random();
-            int randomNumber = random.nextInt(991) + 10;
-            entries.add(new BarEntry(i, randomNumber));
+        for (int i = 0; i < powerList.size() - 1; i++) {
+            entries.add(new BarEntry(i, powerList.get(i)));
             colors.add(getRandomColor());
         }
 
         YAxis yAxis = barChart.getAxisLeft();
         yAxis.setAxisMaximum(0f);
-        yAxis.setAxisMaximum(1000f);
+        yAxis.setAxisMaximum(70000f);
         yAxis.setAxisLineWidth(2f);
         yAxis.setAxisLineColor(Color.BLACK);
         yAxis.setLabelCount(20);
@@ -175,21 +200,16 @@ public class HomeFragment extends Fragment {
         barChart.getDescription().setEnabled(false);
         barChart.invalidate();
 
-//        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(value));
+        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(dayList));
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         barChart.getXAxis().setAxisLineColor(Color.BLACK);
         barChart.getXAxis().setGranularity(1f);
         barChart.getAxisLeft().setDrawLabels(false);
-        barChart.getAxisLeft().setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                return value + "Kwh";
-            }
-        });
         barChart.getXAxis().setGranularityEnabled(true);
         barChart.getXAxis().setDrawGridLines(false);
         barChart.getAxisLeft().setDrawGridLines(false);
-        barChart.setScaleXEnabled(false);
+        barChart.setScaleEnabled(false);
+        barChart.getLegend().setEnabled(false);
     }
 
     private int getRandomColor() {

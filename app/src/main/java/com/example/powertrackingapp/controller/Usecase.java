@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.powertrackingapp.model.Alert;
+import com.example.powertrackingapp.model.CreateUserRequest;
+import com.example.powertrackingapp.model.EditPasswordRequest;
 import com.example.powertrackingapp.model.PowerConsumption;
 import com.example.powertrackingapp.model.UpdateUserInfo;
 import com.example.powertrackingapp.view.LoginActivity;
@@ -74,6 +76,22 @@ public class Usecase {
         String result =  repository.getPowerConsumption(powerConsumption);
         if (result == null) {
             Log.i(TAG, "data consumption is null");
+        }
+        return result;
+    }
+
+    public String createUser(CreateUserRequest createUserRequest) throws Exception {
+        String result =  repository.createUser(createUserRequest);
+        if (result == null) {
+            Log.i(TAG, "create is false");
+        }
+        return result;
+    }
+
+    public String editPassword(EditPasswordRequest editPasswordRequest) throws Exception {
+        String result =  repository.editPassword(editPasswordRequest);
+        if (result == null) {
+            Log.i(TAG, "create is false");
         }
         return result;
     }

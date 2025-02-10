@@ -6,6 +6,8 @@ import static com.example.powertrackingapp.AppConstant.TIME_OUT;
 import android.util.Log;
 
 import com.example.powertrackingapp.model.Alert;
+import com.example.powertrackingapp.model.CreateUserRequest;
+import com.example.powertrackingapp.model.EditPasswordRequest;
 import com.example.powertrackingapp.model.PowerConsumption;
 import com.example.powertrackingapp.model.UpdateUserInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -170,6 +172,28 @@ public class Repository {
 
         String requestTopic = "power-consumption/client";
         String responseTopic = "power-consumption/client/" + powerConsumption.getRealDeviceId();
+
+        return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
+    }
+
+    public String createUser(CreateUserRequest createUserRequest) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String payload = objectMapper.writeValueAsString(createUserRequest);
+
+        String requestTopic = "create/client";
+        String responseTopic = "create/client/" + createUserRequest.getRealDeviceId();
+
+        return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
+    }
+
+    public String editPassword(EditPasswordRequest editPasswordRequest) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String payload = objectMapper.writeValueAsString(editPasswordRequest);
+
+        String requestTopic = "edit-password/client";
+        String responseTopic = "edit-password/client/" + editPasswordRequest.getRealDeviceId();
 
         return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
     }

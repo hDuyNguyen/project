@@ -56,8 +56,11 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
         // Định dạng ngày giờ
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String formattedDateTime = formatter.format(calendar.getTime());
-        binding.startDate.setText(formattedDateTime);
         binding.endDate.setText(formattedDateTime);
+
+        calendar.add(Calendar.MONTH, -5);
+        String startDateTime = formatter.format(calendar.getTime());
+        binding.startDate.setText(startDateTime);
 
         return binding.getRoot();
     }
@@ -113,11 +116,7 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
         }
 
         try {
-            showHistory(
-                    DatePicker.convertStringToLocalDate(binding.startDate.getText().toString()),
-                    DatePicker.convertStringToLocalDate(binding.endDate.getText().toString()));
-
-            binding.historyList.setAdapter(new HistoryAdapter(getActivity(), this, historyList));
+            displayHistory();
         } catch (Exception e) {
             Log.e(TAG, "onDateSet: ", e);
         }
@@ -135,6 +134,12 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
 
         if (endDate != null) {
             binding.endDate.setText(endDate);
+        }
+
+        try {
+            displayHistory();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -154,5 +159,13 @@ public class AlarmHistory extends Fragment implements DatePicker.DatePickerListe
             Thread.sleep(1000);
             historyList = Utils.convertJsonToStringHistory(history);
         }
+    }
+
+    private void displayHistory() throws Exception{
+        showHistory(
+                DatePicker.convertStringToLocalDate(binding.startDate.getText().toString()),
+                DatePicker.convertStringToLocalDate(binding.endDate.getText().toString()));
+
+        binding.historyList.setAdapter(new HistoryAdapter(getActivity(), this, historyList));
     }
 }
