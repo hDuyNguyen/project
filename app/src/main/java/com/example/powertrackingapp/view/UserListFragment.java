@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.powertrackingapp.R;
+import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.model.User;
 import com.example.powertrackingapp.model.UserAdapter;
 import com.example.powertrackingapp.view.Dialog.AddUserDialog;
@@ -26,6 +27,8 @@ import java.util.List;
 public class UserListFragment extends Fragment {
 
     private List<User> userListData = new ArrayList<>();
+    private Usecase usecase = Usecase.getInstance();
+    private User user;
 
     @Nullable
     @Override
@@ -33,6 +36,7 @@ public class UserListFragment extends Fragment {
         View view = inflater.inflate(R.layout.user_list, container, false);
 
         ListView userList = view.findViewById(R.id.userList);
+//        usecase.getAllUser()
         // Assuming you have a UserAdapter to populate data
         userListData.add(new User("Nguyễn Mạnh Hùng","hung@gmail.com", "Hà Nam", "0123453463"));
         userListData.add(new User("Nguyễn Thị A","thia@gmail.com", "Nghệ An", "0123523463"));
@@ -99,9 +103,9 @@ public class UserListFragment extends Fragment {
             dialog.dismiss();
         });
 
-        Button changeButton = dialogView.findViewById(R.id.dialog_ok_confirm_button);
-        changeButton.setOnClickListener(v -> {
-
+        Button deleteButton = dialogView.findViewById(R.id.dialog_ok_confirm_button);
+        deleteButton.setOnClickListener(v -> {
+//            usecase.deleteUser()
         });
 
     }

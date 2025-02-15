@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button buttonLogin;
     private final Usecase usecase = Usecase.getInstance();
     private User user = new User();
+    public static boolean isSendToken = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 try {
                     loginMessage = usecase.login(username, password, DEVICE_ID);
-                    FirebaseToken.sendTokenToServer(LoginActivity.this);
+                    isSendToken = false;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

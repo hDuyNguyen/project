@@ -7,8 +7,11 @@ import android.util.Log;
 
 import com.example.powertrackingapp.model.Alert;
 import com.example.powertrackingapp.model.CreateUserRequest;
+import com.example.powertrackingapp.model.DeleteUserRequest;
 import com.example.powertrackingapp.model.EditPasswordRequest;
+import com.example.powertrackingapp.model.GetAllUSerRequest;
 import com.example.powertrackingapp.model.PowerConsumption;
+import com.example.powertrackingapp.model.SendToken;
 import com.example.powertrackingapp.model.UpdateUserInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -21,6 +24,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -31,6 +35,7 @@ public class Repository {
     private static IMqttClient client = null;
     private String payload;
     private final boolean[] responseReceived = {false};
+    String randomString = UUID.randomUUID().toString();
 
     private Repository() {
     }
@@ -50,7 +55,7 @@ public class Repository {
 
         try {
             String broker = "ssl://i1731e41.ala.asia-southeast1.emqxsl.com:8883";
-            String clientId = "duynm";
+            String clientId = randomString;
             String username = "dungdung";
             String password = "12345678";
 
@@ -59,7 +64,7 @@ public class Repository {
             connOpts.setCleanSession(true); // Không lưu lại trạng thái cũ
             connOpts.setUserName(username);
             connOpts.setPassword(password.toCharArray());
-            connOpts.setAutomaticReconnect(true); // Tự động kết nối lại nếu mất
+//            connOpts.setAutomaticReconnect(true); // Tự động kết nối lại nếu mất
             connOpts.setConnectionTimeout(10); // Timeout sau 10 giây
 
             client.connect(connOpts);
@@ -84,17 +89,19 @@ public class Repository {
         }
     }
 
-    public void sendTokenToServer(String topic, String message) {
+    public void sendTokenToServer(String topic, SendToken sendToken) {
         try {
             if (client != null && client.isConnected()) {
-                MqttMessage mqttMessage = new MqttMessage(message.getBytes());
+                ObjectMapper objectMapper = new ObjectMapper();
+                MqttMessage mqttMessage = new MqttMessage();
+                mqttMessage.setPayload(objectMapper.writeValueAsBytes(sendToken));
                 mqttMessage.setQos(1);
                 client.publish(topic, mqttMessage);
-                Log.d(TAG, "Gửi MQTT: " + message);
+//                Log.d(TAG, "Gửi MQTT: " + );
             } else {
                 Log.e(TAG, "MQTT chưa kết nối, không thể gửi tin nhắn.");
             }
-        } catch (MqttException e) {
+        } catch (Exception e) {
             Log.e(TAG, "Lỗi khi gửi tin nhắn MQTT: " + e.getMessage());
         }
     }
@@ -165,6 +172,17 @@ public class Repository {
         return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
     }
 
+    public String getAllUSer(GetAllUSerRequest getAllUSerRequest, String deviceId) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String payload = objectMapper.writeValueAsString(getAllUSerRequest);
+
+        String requestTopic = "history/client";
+        String responseTopic = "history/client/" + deviceId;
+
+        return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
+    }
+
     public String getPowerConsumption(PowerConsumption powerConsumption) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
@@ -194,6 +212,17 @@ public class Repository {
 
         String requestTopic = "edit-password/client";
         String responseTopic = "edit-password/client/" + editPasswordRequest.getRealDeviceId();
+
+        return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
+    }
+
+    public String deleteUser(DeleteUserRequest deleteUserRequest) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        String payload = objectMapper.writeValueAsString(deleteUserRequest);
+
+        String requestTopic = "edit-password/client";
+        String responseTopic = "edit-password/client/" + deleteUserRequest.getRealDeviceId();
 
         return sendRequestAndWaitForResponse(requestTopic, responseTopic, payload, TIME_OUT);
     }

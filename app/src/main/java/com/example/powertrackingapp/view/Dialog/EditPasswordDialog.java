@@ -69,6 +69,7 @@ public class EditPasswordDialog extends DialogFragment {
             EditPasswordRequest editPasswordRequest = new EditPasswordRequest();
             editPasswordRequest.setToken(user.getToken());
             editPasswordRequest.setRealDeviceId(DEVICE_ID);
+            editPasswordRequest.setPassword(SharedPreferencesHelper.getPassword(requireContext()));
             editPasswordRequest.setNewPassword(String.valueOf(binding.newPassword.getText()));
 
             if (compareOldPassword(String.valueOf(binding.oldPassword.getText()))) {

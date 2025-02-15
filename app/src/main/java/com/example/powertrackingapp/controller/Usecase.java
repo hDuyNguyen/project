@@ -12,7 +12,9 @@ import android.util.Log;
 
 import com.example.powertrackingapp.model.Alert;
 import com.example.powertrackingapp.model.CreateUserRequest;
+import com.example.powertrackingapp.model.DeleteUserRequest;
 import com.example.powertrackingapp.model.EditPasswordRequest;
+import com.example.powertrackingapp.model.GetAllUSerRequest;
 import com.example.powertrackingapp.model.PowerConsumption;
 import com.example.powertrackingapp.model.UpdateUserInfo;
 import com.example.powertrackingapp.view.LoginActivity;
@@ -90,6 +92,22 @@ public class Usecase {
 
     public String editPassword(EditPasswordRequest editPasswordRequest) throws Exception {
         String result =  repository.editPassword(editPasswordRequest);
+        if (result == null) {
+            Log.i(TAG, "create is false");
+        }
+        return result;
+    }
+
+    public String deleteUser(DeleteUserRequest deleteUserRequest) throws Exception {
+        String result =  repository.deleteUser(deleteUserRequest);
+        if (result == null) {
+            Log.i(TAG, "create is false");
+        }
+        return result;
+    }
+
+    public String getAllUser(GetAllUSerRequest getAllUSerRequest, String deviceId) throws Exception {
+        String result =  repository.getAllUSer(getAllUSerRequest, deviceId);
         if (result == null) {
             Log.i(TAG, "create is false");
         }

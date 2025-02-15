@@ -15,6 +15,7 @@ import com.example.powertrackingapp.R;
 import com.example.powertrackingapp.SharedPreferencesHelper;
 import com.example.powertrackingapp.controller.Usecase;
 import com.example.powertrackingapp.model.User;
+import com.example.powertrackingapp.service.FirebaseToken;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +35,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (SharedPreferencesHelper.isLoggedIn(this)) {
             user = SharedPreferencesHelper.getUser(this);
+        }
+
+        if (!LoginActivity.isSendToken){
+            FirebaseToken.sendTokenToServer(MainActivity.this);
         }
 
         setClickInBottomNavigation();
